@@ -122,6 +122,8 @@ html {
 
 @media (max-width: 540px) {
   .site-header {
+    height: 58px;
+    padding-inline: 14px;
     justify-content: center;
   }
 
