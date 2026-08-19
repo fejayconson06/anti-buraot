@@ -1,5 +1,5 @@
-.expense-form input {
-  font-size: 16px;
+#expense-modal .expense-form input {
+  font-size: 16px !important;
 }
 
 .header-summary {
