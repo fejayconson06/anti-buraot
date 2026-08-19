@@ -75,15 +75,6 @@
   outline: none;
 }
 
-.period-expenses .expense-item.draft {
-  background: rgba(255, 240, 237, .65);
-}
-
-.period-expenses .expense-item.draft:hover,
-.period-expenses .expense-item.draft:focus-visible {
-  background: #fff0ed;
-}
-
 .draft-label {
   margin-left: 6px;
   padding: 2px 5px;
