@@ -2,6 +2,15 @@
   font-size: 16px !important;
 }
 
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+.brand span {
+  background: var(--danger);
+}
+
 .header-summary {
   gap: 6px;
 }
