@@ -13,6 +13,12 @@
   background: var(--white);
 }
 
+.day-period:has(.period-expenses:empty) {
+  min-height: 110px;
+  padding-top: 12px;
+  padding-bottom: 14px;
+}
+
 .day-period:nth-child(2) { background: #fff9e8; }
 .day-period:nth-child(3) { background: #f0f2fb; }
 
@@ -153,6 +159,7 @@
   .timeline-track .day-header { grid-template-columns: 42px 1fr; }
   .timeline-track .day-total { display: none; }
   .day-period { padding: 7px 9px 9px; }
+  .day-period:has(.period-expenses:empty) { min-height: 104px; padding-top: 11px; padding-bottom: 13px; }
   .day-periods { grid-template-rows: repeat(3, minmax(92px, auto)); }
   .period-expenses .expense-item { grid-template-columns: 30px minmax(0, 1fr) auto; }
   .expense-actions { grid-column: 3; grid-row: 2; justify-content: flex-end; }
