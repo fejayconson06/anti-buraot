@@ -149,30 +149,6 @@
   outline: none;
 }
 
-.end-trip-button {
-  width: calc(100% - 114px);
-  height: 30px;
-  margin: -1px auto 0;
-  display: grid;
-  place-items: center;
-  border: 1px dashed #e0aaa2;
-  border-radius: 7px;
-  background: #fff0ed;
-  color: var(--danger);
-  font-size: 10px;
-  font-weight: 800;
-  cursor: pointer;
-}
-
-.end-trip-button:hover,
-.end-trip-button:focus-visible {
-  border-style: solid;
-  border-color: var(--danger);
-  background: var(--danger);
-  color: var(--white);
-  outline: none;
-}
-
 @media (max-width: 540px) {
   .timeline-track .day-header { grid-template-columns: 42px 1fr; }
   .timeline-track .day-total { display: none; }
@@ -182,5 +158,4 @@
   .expense-actions { grid-column: 3; grid-row: 2; justify-content: flex-end; }
   .period-expenses .expense-item { width: 94%; }
   .period-add-button { width: 94%; height: 27px; }
-  .end-trip-button { width: calc(100% - 20px); }
 }

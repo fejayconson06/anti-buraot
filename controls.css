@@ -363,6 +363,8 @@
   .split-person .allocation-input { height: 33px; }
   .split-person .allocation-input input { height: 31px; padding: 0 6px; font-size: 10px; }
   .modal-card .allocation-input span { flex-basis: 26px; }
+  /* Prevent iOS Safari from zooming when the modal focuses an input. */
+  .modal-card input { font-size: 16px; }
   .modal-card .form-actions { flex-direction: row; gap: 7px; margin-top: 8px; }
   .modal-card .form-actions .secondary-button { width: auto; flex: 0 0 auto; }
   .modal-card .form-actions .draft-button { flex: 0 0 auto; padding-inline: 10px; }
