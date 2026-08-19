@@ -1,0 +1,373 @@
+.modal-card .expense-fields {
+  grid-template-columns: minmax(0, 1.4fr) minmax(150px, .6fr);
+  gap: 9px;
+  margin: 12px 0;
+}
+
+.expense-form.modal-card {
+  width: min(590px, 100%);
+  height: auto;
+  max-height: calc(100vh - 32px);
+  padding: 18px;
+  overflow-y: auto;
+}
+
+.modal-card .section-title h2 {
+  font-size: 17px;
+}
+
+.modal-card .step {
+  margin-bottom: 5px;
+  font-size: 8px;
+}
+
+.modal-card label {
+  margin-bottom: 5px;
+  font-size: 10px;
+}
+
+.modal-card .input,
+.modal-card .money-input {
+  height: 40px;
+  font-size: 12px;
+}
+
+.modal-card .money-input input {
+  height: 38px;
+  font-size: 12px;
+}
+
+.modal-card .expense-fields > div,
+.modal-card .allocation-row,
+.modal-card .allocation-input,
+.modal-card .money-input {
+  min-width: 0;
+}
+
+.modal-card input,
+.modal-card select {
+  max-width: 100%;
+}
+
+.modal-card .expense-fields > div:first-child {
+  grid-column: auto;
+}
+
+.modal-card .money-input {
+  overflow: hidden;
+}
+
+.modal-card .money-input input {
+  flex: 1 1 auto;
+  width: 0;
+  max-width: 100%;
+}
+
+.modal-card .allocation-input input {
+  flex: 1 1 auto;
+  width: 0 !important;
+  min-width: 0 !important;
+  max-width: 100%;
+  box-sizing: border-box;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.modal-card .allocation-input {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.modal-card .allocation-input span {
+  flex: 0 0 30px;
+}
+
+.modal-card .allocation-input input::-webkit-inner-spin-button,
+.modal-card .allocation-input input::-webkit-outer-spin-button {
+  margin: 0;
+  appearance: none;
+}
+
+.modal-card .allocation-row {
+  width: 100%;
+  grid-template-columns: 30px minmax(0, 1fr) minmax(0, 130px);
+}
+
+.payer-section {
+  margin: 0 0 11px;
+}
+
+.payer-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.payer-list button {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #cfd5d1;
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: -.2px;
+  cursor: pointer;
+  transition: border-color .16s ease, background .16s ease, color .16s ease, box-shadow .16s ease;
+}
+
+.modal-card .split-tabs {
+  margin-bottom: 11px;
+}
+
+.modal-card .split-tabs button {
+  min-height: 33px;
+  font-size: 9px;
+}
+
+.modal-card .split-header {
+  min-height: 18px;
+  margin-bottom: 4px;
+  font-size: 9px;
+}
+
+.unified-split-list {
+  max-height: 190px;
+  padding-right: 3px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.split-person {
+  min-width: 0;
+  min-height: 43px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 120px;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 2px;
+  border-bottom: 1px solid #edf0ed;
+}
+
+.split-person:last-child {
+  border-bottom: 0;
+}
+
+.split-person-toggle {
+  min-width: 0;
+  height: 34px;
+  padding: 0 4px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.split-person-toggle:hover {
+  background: var(--soft);
+}
+
+.split-person-toggle strong {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--ink);
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.split-check {
+  width: 17px;
+  height: 17px;
+  flex: 0 0 17px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--green);
+  border-radius: 5px;
+  background: var(--green);
+  color: var(--white);
+  font-size: 8px;
+  font-weight: 800;
+}
+
+.split-person .mini-avatar {
+  width: 27px;
+  height: 27px;
+  flex: 0 0 27px;
+  font-size: 8px;
+}
+
+.split-person:not(.active) .split-check {
+  border-color: #cfd5d1;
+  background: var(--white);
+  color: transparent;
+}
+
+.split-person:not(.active) .mini-avatar,
+.split-person:not(.active) .split-person-toggle strong {
+  opacity: .5;
+}
+
+.split-person .allocation-input {
+  height: 34px;
+}
+
+.split-person .allocation-input input {
+  height: 33px;
+  font-size: 11px;
+}
+
+.split-person .allocation-input:focus-within {
+  border-color: var(--green);
+  box-shadow: 0 0 0 2px rgba(25, 107, 71, .08);
+}
+
+.split-person .allocation-input:has(input:disabled) {
+  border-color: #e4e7e4;
+  background: var(--soft);
+  opacity: .6;
+}
+
+.split-person .allocation-input input:disabled {
+  background: transparent;
+  color: var(--muted);
+}
+
+#split-preview.valid { color: var(--green); }
+#split-preview.invalid { color: var(--danger); }
+
+.modal-card .error {
+  margin-top: 8px;
+  padding: 8px 10px;
+  font-size: 9px;
+}
+
+.modal-card .form-actions {
+  margin-top: 10px;
+}
+
+.modal-card .form-actions button {
+  height: 38px;
+  min-height: 38px;
+  font-size: 10px;
+}
+
+.draft-button {
+  padding: 0 14px;
+  border: 1px solid #e0aaa2;
+  border-radius: 9px;
+  background: #fff5f3;
+  color: var(--danger);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.draft-button:hover {
+  border-color: #cf8d83;
+  background: #ffe9e5;
+}
+
+.payer-list button:hover {
+  border-color: var(--green);
+}
+
+.payer-list button.active {
+  border-color: var(--green);
+  background: var(--green);
+  color: var(--white);
+  box-shadow: 0 0 0 3px var(--green-soft);
+}
+
+.confirm-card {
+  position: relative;
+  z-index: 1;
+  width: min(390px, 100%);
+  padding: 18px;
+  border-radius: 14px;
+  background: var(--white);
+  text-align: center;
+  box-shadow: 0 24px 70px rgba(10, 26, 17, .24);
+}
+
+.confirm-icon {
+  width: 36px;
+  height: 36px;
+  margin: 0 auto 11px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #f9ece9;
+  color: var(--danger);
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.confirm-card h2 {
+  margin: 0 0 6px;
+  font-size: 17px;
+  letter-spacing: -.3px;
+}
+
+.confirm-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.confirm-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+  margin-top: 14px;
+}
+
+.confirm-actions button {
+  height: 38px;
+  min-height: 38px;
+  border-radius: 9px;
+  font-size: 10px;
+}
+
+.danger-button {
+  height: 38px;
+  border: 0;
+  border-radius: 9px;
+  background: var(--danger);
+  color: var(--white);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+@media (max-width: 540px) {
+  .modal { align-items: center; padding: 10px; }
+  .expense-form.modal-card { width: 100%; height: auto; max-height: calc(100vh - 20px); padding: 14px; border-radius: 14px; }
+  .modal-card .expense-fields { grid-template-columns: 1fr; gap: 8px; margin: 9px 0; }
+  .payer-section { margin-bottom: 8px; }
+  .payer-list { gap: 7px; }
+  .payer-list button { width: 33px; height: 33px; }
+  .unified-split-list { max-height: min(180px, 30vh); }
+  .split-person { grid-template-columns: minmax(0, 1fr) 102px; gap: 5px; min-height: 41px; padding: 3px 1px; }
+  .split-person-toggle { gap: 6px; padding-left: 2px; }
+  .split-person .allocation-input { height: 33px; }
+  .split-person .allocation-input input { height: 31px; padding: 0 6px; font-size: 10px; }
+  .modal-card .allocation-input span { flex-basis: 26px; }
+  .modal-card .form-actions { flex-direction: row; gap: 7px; margin-top: 8px; }
+  .modal-card .form-actions .secondary-button { width: auto; flex: 0 0 auto; }
+  .modal-card .form-actions .draft-button { flex: 0 0 auto; padding-inline: 10px; }
+  .modal-card .form-actions .primary-button.compact { width: auto; flex: 1; }
+  .period-expenses .expense-item { position: relative; padding-right: 40px; }
+  .period-expenses .expense-actions { position: absolute; top: 50%; right: 7px; grid-column: auto; grid-row: auto; transform: translateY(-50%); }
+  .confirm-card { width: calc(100% - 28px); padding: 18px; }
+}

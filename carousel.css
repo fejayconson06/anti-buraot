@@ -1,0 +1,127 @@
+.day-carousel {
+  position: relative;
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) 34px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 5px 5px;
+  overflow: visible;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.day-viewport {
+  min-width: 0;
+  padding: 4px 0 14px;
+  overflow: hidden;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  filter: drop-shadow(0 9px 10px rgba(22, 53, 35, .14));
+  touch-action: pan-y;
+}
+
+.timeline-track {
+  position: relative;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: flex-start;
+  gap: 24px !important;
+  padding-inline: 12px;
+  transition: transform .35s cubic-bezier(.22, .75, .28, 1);
+  will-change: transform;
+}
+
+.timeline-track > .day-panel {
+  flex: 0 0 100%;
+  width: 100%;
+  min-height: 280px;
+  opacity: 1;
+  transform: none;
+  border-color: transparent;
+  box-shadow: none;
+  transition: opacity .3s ease, transform .35s ease, box-shadow .35s ease;
+}
+
+.timeline-track > .day-panel.active {
+  opacity: 1;
+  transform: none;
+  box-shadow: none;
+}
+
+.timeline-track .day-header {
+  min-height: 72px;
+  padding: 13px 16px;
+}
+
+.timeline-track .day-expenses {
+  padding-inline: 15px;
+}
+
+.timeline-track .day-empty {
+  padding: 48px 0;
+}
+
+.carousel-button {
+  position: relative;
+  z-index: 2;
+  width: 30px;
+  height: 76px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(25, 107, 71, .15);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, .94);
+  color: var(--green);
+  box-shadow: 0 6px 18px rgba(22, 53, 35, .1);
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform .18s ease, opacity .18s ease;
+}
+
+.carousel-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.carousel-button:disabled {
+  opacity: .2;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.day-dots {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  margin: 0 0 2px;
+}
+
+.day-dots span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #cbd2cd;
+  transition: width .25s ease, background .25s ease;
+}
+
+.day-dots span.active {
+  width: 18px;
+  border-radius: 5px;
+  background: var(--green);
+}
+
+@media (max-width: 540px) {
+  .day-carousel { grid-template-columns: minmax(0, 1fr); padding: 4px 0; }
+  .carousel-button { display: none; }
+  .day-viewport { filter: drop-shadow(0 8px 9px rgba(22, 53, 35, .14)); }
+  .timeline-track { gap: 20px !important; padding-inline: 10px; }
+  .timeline-track > .day-panel { flex-basis: 100%; width: 100%; min-height: 290px; }
+  .timeline-track > .day-panel.active { box-shadow: none; }
+  .day-dots { margin-bottom: 1px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .timeline-track, .timeline-track > .day-panel, .carousel-button { transition: none; }
+}

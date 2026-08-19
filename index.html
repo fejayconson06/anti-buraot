@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en-PH">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Create trip groups, record daily expenses, and settle up fairly.">
+  <title>Anti-Buraot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=5"><link rel="stylesheet" href="modal.css?v=6"><link rel="stylesheet" href="timeline.css?v=1"><link rel="stylesheet" href="carousel.css?v=10"><link rel="stylesheet" href="periods.css?v=15"><link rel="stylesheet" href="typography.css?v=1"><link rel="stylesheet" href="layout.css?v=1"><link rel="stylesheet" href="controls.css?v=9"><link rel="stylesheet" href="refinements.css?v=5">
+</head>
+<body>
+  <header class="site-header"><button class="brand" id="home-button" type="button"><span>AB</span>Anti-Buraot</button></header>
+  <main>
+    <section id="groups-screen" class="groups-screen" hidden>
+      <div class="page-heading"><div><span class="step">YOUR TRIPS</span><h1>Groups</h1><p>Create a group, then start the trip when everyone is ready.</p></div><button id="new-group-button" class="primary-button compact" type="button">New group <span>+</span></button></div>
+      <div id="groups-list" class="groups-list"></div>
+    </section>
+
+    <section id="setup-screen" class="setup-screen">
+      <form id="group-form" class="setup-form" novalidate>
+        <div class="form-intro"><span class="step">NEW GROUP</span><h1>Create a group</h1><p>Add the people who will share expenses.</p></div>
+        <label for="group-name">Group name</label><input id="group-name" class="input" maxlength="60" placeholder="e.g. Boracay Trip" autocomplete="off">
+        <div class="members-heading"><label>Members</label><small id="completion">0 of 2 named</small></div>
+        <div id="people-list" class="people-list"></div><p id="group-error" class="error" role="alert" hidden></p>
+        <button class="primary-button" type="submit">Save group <span>→</span></button><button id="cancel-group" class="cancel-link" type="button" hidden>Cancel</button>
+        <p class="note">Saved on this device until Firebase is connected.</p>
+      </form>
+    </section>
+
+    <section id="group-screen" class="dashboard" hidden>
+      <header class="group-header">
+        <div class="group-header-main"><div class="group-identity"><span class="step" id="trip-day-label">TRIP</span><div class="group-title-row"><h1 id="dashboard-group-name"></h1><div id="member-line" class="member-line" aria-label="Group members"></div></div></div><button id="summary-toggle" class="summary-toggle" type="button" aria-expanded="false" aria-controls="header-summary">Summary <span>⌄</span></button><div id="header-summary" class="header-summary"><div class="summary-bar"><div><small>Total spent</small><strong id="total-spend">₱0.00</strong><span id="expense-count" hidden></span></div></div><section class="panel balance-summary"><div id="balance-list" class="balance-list"></div></section></div><button id="back-to-groups" class="quiet-button" type="button">← Groups</button></div>
+        <div id="settlement-list" hidden></div>
+      </header>
+      <div class="trip-grid">
+        <section><span id="day-position" hidden></span><div id="day-dots" class="day-dots" aria-hidden="true"></div><div class="day-carousel"><button id="previous-day" class="carousel-button" type="button" aria-label="Previous day">‹</button><div class="day-viewport"><div id="timeline-list" class="timeline-track"></div></div><button id="next-day" class="carousel-button" type="button" aria-label="Next day">›</button></div><button id="end-trip" class="end-trip-button" type="button">End Trip</button></section>
+      </div>
+      <div class="trip-footer"><button id="add-test-day" class="quiet-button" type="button">Test: add next day</button></div>
+    </section>
+  </main>
+
+  <div id="expense-modal" class="modal" hidden>
+    <button id="modal-backdrop" class="modal-backdrop" type="button" aria-label="Close expense form"></button>
+    <form id="expense-form" class="expense-form modal-card" role="dialog" aria-modal="true" aria-labelledby="expense-title" novalidate>
+      <div class="section-title"><div><span class="step" id="expense-date-label">EXPENSE</span><h2 id="expense-title">Add an expense</h2></div></div>
+      <div class="expense-fields"><div><label for="expense-description">Description</label><input id="expense-description" class="input" maxlength="70" placeholder="e.g. Dinner" autocomplete="off"></div><div><label for="expense-amount">Amount</label><div class="money-input"><span>₱</span><input id="expense-amount" type="text" inputmode="decimal" placeholder="0.00" autocomplete="off"></div></div></div>
+      <div class="payer-section"><label>Paid by</label><div id="payer-list" class="payer-list" role="radiogroup" aria-label="Paid by"></div><input id="expense-payer" type="hidden"></div>
+      <div class="split-header"><label>Split between</label><small id="split-preview"></small></div>
+      <div id="split-list" class="unified-split-list"></div>
+      <p id="expense-error" class="error" role="alert" hidden></p><div class="form-actions"><button id="cancel-expense" class="secondary-button" type="button">Cancel</button><button id="save-draft-button" class="draft-button" type="button">Save draft</button><button id="save-expense-button" class="primary-button compact" type="submit">Save expense <span>→</span></button></div>
+    </form>
+  </div>
+  <div id="delete-modal" class="modal" hidden>
+    <button id="delete-backdrop" class="modal-backdrop" type="button" aria-label="Cancel deletion"></button>
+    <section class="confirm-card" role="alertdialog" aria-modal="true" aria-labelledby="delete-title" aria-describedby="delete-message">
+      <div class="confirm-icon" aria-hidden="true">!</div><h2 id="delete-title">Delete expense?</h2><p id="delete-message">This expense will be permanently removed and everyone’s balance will be recalculated.</p>
+      <div class="confirm-actions"><button id="cancel-delete" class="secondary-button" type="button">Cancel</button><button id="confirm-delete" class="danger-button" type="button">Delete</button></div>
+    </section>
+  </div>
+  <script src="app.js?v=36"></script>
+</body>
+</html>
