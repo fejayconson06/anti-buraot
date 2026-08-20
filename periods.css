@@ -17,6 +17,8 @@
   min-height: 110px;
   padding-top: 12px;
   padding-bottom: 14px;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
 }
 
 .day-period:nth-child(2) { background: #fff9e8; }
@@ -53,6 +55,11 @@
 
 .period-expenses:empty {
   margin: 0;
+}
+
+.period-expenses:not(:empty) {
+  margin-right: 4px;
+  margin-left: 8px;
 }
 
 .period-expenses .expense-item {
