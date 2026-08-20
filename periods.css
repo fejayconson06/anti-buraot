@@ -56,7 +56,7 @@
 }
 
 .period-expenses .expense-item {
-  grid-template-columns: 30px minmax(0, 1fr) auto auto;
+  grid-template-columns: 30px minmax(0, 1fr) 88px 24px;
   gap: 6px;
   width: 100%;
   margin: 0;
@@ -197,7 +197,41 @@ button.audit-label:focus-visible {
   display: none;
 }
 
+.expense-viewer-meta {
+  display: block;
+  margin-top: 4px;
+  color: #929994;
+  font-size: 7px;
+  font-weight: 600;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.expense-activity-labels {
+  margin-left: 4px;
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 8px;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+}
+
+.expense-activity-labels b {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.actor-mismatch-label {
+  background: #ffcbc6;
+  color: #9e2117;
+  box-shadow: 0 0 0 1px #ff2d20;
+}
+
+
 .viewer-expense-amount {
+  grid-column: 3;
   min-width: 78px;
   text-align: right;
 }
@@ -232,6 +266,9 @@ button.audit-label:focus-visible {
 }
 
 .expense-actions {
+  grid-column: 4;
+  width: 24px;
+  flex: 0 0 24px;
   display: flex;
   align-items: center;
   gap: 2px;
@@ -278,6 +315,35 @@ button.audit-label:focus-visible {
   outline: none;
 }
 
+.end-trip-button {
+  width: calc(100% - 92px);
+  height: 32px;
+  margin: 0 auto 8px;
+  display: grid;
+  place-items: center;
+  border: 1px dashed #d7a49d;
+  border-radius: 7px;
+  background: #fff0ed;
+  color: var(--danger);
+  font-size: 10px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.end-trip-button:hover,
+.end-trip-button:focus-visible {
+  border-style: solid;
+  background: var(--danger);
+  color: var(--white);
+  outline: none;
+}
+
+@media (max-width: 540px) {
+  .end-trip-button {
+    width: calc(100% - 20px);
+  }
+}
+
 @media (max-width: 540px) {
   .timeline-track .day-header { grid-template-columns: 42px 1fr; }
   .timeline-track .day-total { display: none; }
@@ -288,7 +354,9 @@ button.audit-label:focus-visible {
   .expense-actions { grid-column: 3; grid-row: 2; justify-content: flex-end; }
   .period-expenses .expense-item { width: 100%; }
   .desktop-split-details { display: none; }
+  .expense-activity-labels { display: none; }
   .mobile-expense-details { display: block; }
+  .expense-viewer-meta { display: none; }
   .viewer-expense-amount { display: block; }
   .period-add-button { width: 94%; height: 27px; }
 }

@@ -7,19 +7,20 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=5"><link rel="stylesheet" href="modal.css?v=6"><link rel="stylesheet" href="timeline.css?v=1"><link rel="stylesheet" href="carousel.css?v=11"><link rel="stylesheet" href="periods.css?v=29"><link rel="stylesheet" href="typography.css?v=1"><link rel="stylesheet" href="layout.css?v=1"><link rel="stylesheet" href="controls.css?v=10"><link rel="stylesheet" href="refinements.css?v=36">
+  <link rel="stylesheet" href="style.css?v=5"><link rel="stylesheet" href="modal.css?v=6"><link rel="stylesheet" href="timeline.css?v=1"><link rel="stylesheet" href="carousel.css?v=11"><link rel="stylesheet" href="periods.css?v=38"><link rel="stylesheet" href="typography.css?v=1"><link rel="stylesheet" href="layout.css?v=1"><link rel="stylesheet" href="controls.css?v=10"><link rel="stylesheet" href="refinements.css?v=59">
 </head>
 <body>
   <header class="site-header"><button class="brand" id="home-button" type="button"><span>AB</span>Anti-Buraot</button></header>
   <main>
     <section id="groups-screen" class="groups-screen" hidden>
-      <div class="page-heading"><div><span class="step">YOUR TRIPS</span><h1>Groups</h1><p>Create a group, then start the trip when everyone is ready.</p></div><button id="new-group-button" class="primary-button compact" type="button">New group <span>+</span></button></div>
+      <div class="page-heading"><span class="step">YOUR TRIPS</span></div>
+      <button id="new-group-button" class="new-group-plus-button" type="button" aria-label="Create a new group" title="New group">+</button>
       <div id="groups-list" class="groups-list"></div>
     </section>
 
     <section id="setup-screen" class="setup-screen">
       <form id="group-form" class="setup-form" novalidate>
-        <div class="form-intro"><span class="step">NEW GROUP</span><h1>Create a group</h1><p>Add the people who will share expenses.</p></div>
+        <div class="form-intro"><span class="step">NEW GROUP</span><h1 hidden>Edit group</h1><p hidden>Update the group name or its members.</p></div>
         <label for="group-name">Group name</label><input id="group-name" class="input" maxlength="60" placeholder="e.g. Boracay Trip" autocomplete="off">
         <div class="members-heading"><label>Members</label><small id="completion">0 of 2 named</small></div>
         <div id="people-list" class="people-list"></div><p id="group-error" class="error" role="alert" hidden></p>
@@ -31,12 +32,11 @@
     <section id="group-screen" class="dashboard" hidden>
       <header class="group-header">
         <div class="group-header-main"><div class="group-identity"><span class="step" id="trip-day-label">TRIP</span></div><button id="back-to-groups" class="quiet-button" type="button">← Groups</button></div>
-        <div id="settlement-list" hidden></div>
       </header>
       <nav class="trip-view-tabs" aria-label="Trip view"><button type="button" data-trip-view="summary">Summary</button><button class="active" type="button" data-trip-view="expenses">Expenses</button></nav>
-      <div id="summary-view" class="header-summary" hidden><div class="summary-bar"><div class="summary-icon" aria-hidden="true"><span></span></div><div class="summary-total"><small>Trip summary</small><strong id="total-spend">₱0.00</strong><span id="expense-count">No expenses yet</span></div></div><section class="spending-summary-card"><small id="spending-summary-label">Your spending</small><div id="spending-breakdown" class="spending-breakdown"></div></section><section class="panel balance-summary"><div id="balance-list" class="balance-list"></div></section></div>
+      <div id="summary-view" class="header-summary" hidden><div class="summary-bar"><div id="summary-icon" class="group-card-icon summary-icon" aria-hidden="true">A</div><div class="summary-total"><small>Trip summary</small><strong id="total-spend">₱0.00</strong><span id="expense-count">No expenses yet</span></div></div><section class="spending-summary-card"><small id="spending-summary-label">Spending per person</small><div id="spending-breakdown" class="spending-breakdown"></div></section><section class="panel balance-summary"><div id="balance-list" class="balance-list"></div></section><section class="settlement-summary-card"><small>Settlement recommendation</small><div id="settlement-list"></div><div id="settlement-history" class="settlement-history"></div></section></div>
       <div id="expenses-view" class="trip-grid">
-        <section><span id="day-position" hidden></span><div id="day-dots" class="day-dots" aria-hidden="true"></div><div class="day-carousel"><button id="previous-day" class="carousel-button" type="button" aria-label="Previous day">‹</button><div class="day-viewport"><div id="timeline-list" class="timeline-track"></div></div><button id="next-day" class="carousel-button" type="button" aria-label="Next day">›</button></div></section>
+        <section><span id="day-position" hidden></span><div id="day-dots" class="day-dots" aria-hidden="true"></div><div class="day-carousel"><button id="previous-day" class="carousel-button" type="button" aria-label="Previous day">‹</button><div class="day-viewport"><div id="timeline-list" class="timeline-track"></div></div><button id="next-day" class="carousel-button" type="button" aria-label="Next day">›</button></div><button id="end-trip-button" class="end-trip-button" type="button" hidden>End trip</button></section>
       </div>
       <div id="expenses-footer" class="trip-footer"><button id="add-test-day" class="quiet-button" type="button">Test: add next day</button></div>
     </section>
@@ -60,6 +60,13 @@
       <div class="confirm-actions"><button id="cancel-delete" class="secondary-button" type="button">Cancel</button><button id="confirm-delete" class="danger-button" type="button">Delete</button></div>
     </section>
   </div>
+  <div id="end-trip-modal" class="modal" hidden>
+    <button id="end-trip-backdrop" class="modal-backdrop" type="button" aria-label="Cancel ending trip"></button>
+    <section class="confirm-card" role="alertdialog" aria-modal="true" aria-labelledby="end-trip-title" aria-describedby="end-trip-message">
+      <div class="confirm-icon" aria-hidden="true">✓</div><h2 id="end-trip-title">End this trip?</h2><p id="end-trip-message">The trip timeline will stop generating new days.</p>
+      <div class="confirm-actions"><button id="cancel-end-trip" class="secondary-button" type="button">Keep ongoing</button><button id="confirm-end-trip" class="danger-button" type="button">End trip</button></div>
+    </section>
+  </div>
   <div id="relation-modal" class="modal" hidden>
     <button id="relation-backdrop" class="modal-backdrop" type="button" aria-label="Close computation summary"></button>
     <section class="relation-summary-card" role="dialog" aria-modal="true" aria-labelledby="relation-title">
@@ -70,6 +77,15 @@
       <div id="relation-details" class="relation-details"></div>
     </section>
   </div>
-  <script src="app.js?v=60"></script>
+  <div id="settlement-modal" class="modal" hidden>
+    <button id="settlement-backdrop" class="modal-backdrop" type="button" aria-label="Close settle up form"></button>
+    <form id="settlement-form" class="settlement-form modal-card" role="dialog" aria-modal="true" aria-labelledby="settlement-title" novalidate>
+      <span class="step">RECORD PAYMENT</span><h2 id="settlement-title">Settle up</h2>
+      <div class="settlement-fields"><label>From<select id="settlement-from"></select></label><label>To<select id="settlement-to"></select></label><label>Amount<div class="money-input"><span>₱</span><input id="settlement-amount" type="text" inputmode="decimal" autocomplete="off" placeholder="0.00"></div></label></div>
+      <p id="settlement-error" class="error" role="alert" hidden></p>
+      <div class="confirm-actions"><button id="cancel-settlement" class="secondary-button" type="button">Cancel</button><button class="primary-button compact" type="submit">Record payment</button></div>
+    </form>
+  </div>
+  <script src="app.js?v=82"></script>
 </body>
 </html>
