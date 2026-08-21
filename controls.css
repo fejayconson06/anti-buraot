@@ -246,6 +246,92 @@
 #split-preview.valid { color: var(--green); }
 #split-preview.invalid { color: var(--danger); }
 
+.transaction-history {
+  margin-top: 12px;
+  padding: 10px 11px;
+  border-radius: 9px;
+  background: var(--soft);
+}
+
+.transaction-history h3 {
+  margin: 0 0 7px;
+  color: var(--ink);
+  font-size: 9px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.transaction-history-list {
+  max-height: 160px;
+  display: grid;
+  gap: 8px;
+  padding-right: 4px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.transaction-history-item {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 7px minmax(0, 1fr);
+  gap: 7px;
+  color: var(--muted);
+  font-size: 9px;
+  line-height: 1.45;
+}
+
+.transaction-history-dot {
+  width: 6px;
+  height: 6px;
+  margin-top: 4px;
+  border-radius: 50%;
+  background: var(--green);
+}
+
+.transaction-history-event {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.transaction-history-event strong {
+  color: var(--ink);
+  font-size: 9px;
+}
+
+.transaction-history-event time {
+  flex: 0 0 auto;
+  color: var(--muted);
+  font-size: 7px;
+}
+
+.transaction-history-change {
+  margin-top: 2px;
+  overflow-wrap: anywhere;
+}
+
+.transaction-history-change > span,
+.transaction-history-change > small {
+  display: block;
+}
+
+.transaction-history-change > small {
+  color: var(--muted);
+  font-size: 8px;
+}
+
+.transaction-history-change b {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.transaction-history-empty {
+  margin: 0;
+  color: var(--muted);
+  font-size: 9px;
+}
+
 .modal-card .error {
   margin-top: 8px;
   padding: 8px 10px;
@@ -357,6 +443,9 @@
   .payer-list { gap: 7px; }
   .payer-list button { width: 33px; height: 33px; }
   .unified-split-list { max-height: min(180px, 30vh); }
+  .transaction-history { padding: 9px; }
+  .transaction-history-list { max-height: 125px; }
+  .transaction-history-event { align-items: flex-start; flex-direction: column; gap: 0; }
   .split-person { grid-template-columns: minmax(0, 1fr) 102px; gap: 5px; min-height: 41px; padding: 3px 1px; }
   .split-person-toggle { gap: 6px; padding-left: 2px; }
   .split-person .allocation-input { height: 33px; }

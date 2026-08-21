@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=5"><link rel="stylesheet" href="modal.css?v=6"><link rel="stylesheet" href="timeline.css?v=1"><link rel="stylesheet" href="carousel.css?v=11"><link rel="stylesheet" href="periods.css?v=42"><link rel="stylesheet" href="typography.css?v=1"><link rel="stylesheet" href="layout.css?v=1"><link rel="stylesheet" href="controls.css?v=11"><link rel="stylesheet" href="refinements.css?v=67">
+  <link rel="stylesheet" href="style.css?v=5"><link rel="stylesheet" href="modal.css?v=7"><link rel="stylesheet" href="timeline.css?v=1"><link rel="stylesheet" href="carousel.css?v=11"><link rel="stylesheet" href="periods.css?v=42"><link rel="stylesheet" href="typography.css?v=1"><link rel="stylesheet" href="layout.css?v=1"><link rel="stylesheet" href="controls.css?v=13"><link rel="stylesheet" href="refinements.css?v=67">
 </head>
 <body>
   <header class="site-header"><button class="brand" id="home-button" type="button"><span>AB</span>Anti-Buraot</button></header>
@@ -52,6 +52,10 @@
       <div class="payer-section"><label>Paid by</label><div id="payer-list" class="payer-list" role="radiogroup" aria-label="Paid by"></div><input id="expense-payer" type="hidden"></div>
       <div class="split-header"><label>Split between</label><small id="split-preview"></small></div>
       <div id="split-list" class="unified-split-list"></div>
+      <section id="transaction-history" class="transaction-history" aria-labelledby="transaction-history-title" hidden>
+        <h3 id="transaction-history-title">Transaction history</h3>
+        <div id="transaction-history-list" class="transaction-history-list"></div>
+      </section>
       <p id="expense-error" class="error" role="alert" hidden></p><div class="form-actions"><button id="cancel-expense" class="secondary-button" type="button">Cancel</button><button id="save-draft-button" class="draft-button" type="button">Save draft</button><button id="save-expense-button" class="primary-button compact" type="submit">Save expense <span>→</span></button></div>
     </form>
   </div>
@@ -99,6 +103,6 @@
       <div class="confirm-actions"><button id="cancel-settlement" class="secondary-button" type="button">Cancel</button><button class="primary-button compact" type="submit">Record payment</button></div>
     </form>
   </div>
-  <script src="app.js?v=91"></script>
+  <script src="app.js?v=92"></script>
 </body>
 </html>
