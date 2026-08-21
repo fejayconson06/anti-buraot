@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=5"><link rel="stylesheet" href="modal.css?v=7"><link rel="stylesheet" href="timeline.css?v=1"><link rel="stylesheet" href="carousel.css?v=15"><link rel="stylesheet" href="periods.css?v=43"><link rel="stylesheet" href="typography.css?v=1"><link rel="stylesheet" href="layout.css?v=1"><link rel="stylesheet" href="controls.css?v=15"><link rel="stylesheet" href="refinements.css?v=70"><link rel="stylesheet" href="desktop-typography.css?v=1">
+  <link rel="stylesheet" href="style.css?v=5"><link rel="stylesheet" href="modal.css?v=7"><link rel="stylesheet" href="timeline.css?v=1"><link rel="stylesheet" href="carousel.css?v=15"><link rel="stylesheet" href="periods.css?v=44"><link rel="stylesheet" href="typography.css?v=1"><link rel="stylesheet" href="layout.css?v=1"><link rel="stylesheet" href="controls.css?v=16"><link rel="stylesheet" href="refinements.css?v=70"><link rel="stylesheet" href="desktop-typography.css?v=2">
 </head>
 <body>
   <header class="site-header"><button class="brand" id="home-button" type="button"><span>AB</span>Anti-Buraot</button></header>
@@ -52,6 +52,11 @@
       <div class="payer-section"><label>Paid by</label><div id="payer-list" class="payer-list" role="radiogroup" aria-label="Paid by"></div><input id="expense-payer" type="hidden"></div>
       <div class="split-header"><label>Split between</label><small id="split-preview"></small></div>
       <div id="split-list" class="unified-split-list"></div>
+      <section class="receipt-section" aria-labelledby="receipt-title">
+        <div class="receipt-heading"><label id="receipt-title" for="receipt-input">Receipt photo</label><small>Optional</small></div>
+        <div id="receipt-preview" class="receipt-preview" hidden><img id="receipt-image" alt="Receipt preview"><button id="remove-receipt" type="button">Remove</button></div>
+        <div class="receipt-controls"><label id="receipt-capture" class="receipt-capture-button" for="receipt-input">Take receipt photo</label><input id="receipt-input" type="file" accept="image/*" capture="environment"><small id="receipt-status">Use the camera or choose an image.</small></div>
+      </section>
       <section id="transaction-history" class="transaction-history" aria-labelledby="transaction-history-title" hidden>
         <h3 id="transaction-history-title">Transaction history</h3>
         <div id="transaction-history-list" class="transaction-history-list"></div>
@@ -103,6 +108,6 @@
       <div class="confirm-actions"><button id="cancel-settlement" class="secondary-button" type="button">Cancel</button><button class="primary-button compact" type="submit">Record payment</button></div>
     </form>
   </div>
-  <script src="app.js?v=94"></script>
+  <script src="app.js?v=97"></script>
 </body>
 </html>

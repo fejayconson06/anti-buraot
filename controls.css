@@ -246,6 +246,112 @@
 #split-preview.valid { color: var(--green); }
 #split-preview.invalid { color: var(--danger); }
 
+.receipt-section {
+  margin-top: 10px;
+  padding: 9px 10px;
+  border-radius: 9px;
+  background: var(--soft);
+}
+
+.receipt-heading,
+.receipt-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.receipt-heading {
+  justify-content: space-between;
+  margin-bottom: 7px;
+}
+
+.receipt-heading label {
+  margin: 0;
+}
+
+.receipt-heading small,
+#receipt-status {
+  color: var(--muted);
+  font-size: 8px;
+}
+
+.receipt-preview {
+  margin-bottom: 8px;
+  padding: 6px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 8px;
+  border-radius: 7px;
+  background: var(--white);
+}
+
+.receipt-preview img {
+  width: 100%;
+  max-height: 130px;
+  display: block;
+  object-fit: contain;
+  object-position: left center;
+  border-radius: 5px;
+}
+
+.receipt-preview button {
+  padding: 4px;
+  border: 0;
+  background: transparent;
+  color: var(--danger);
+  font-size: 8px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.receipt-controls {
+  min-width: 0;
+}
+
+.receipt-capture-button {
+  min-height: 30px;
+  margin: 0;
+  padding: 0 10px;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed #a9c8b6;
+  border-radius: 7px;
+  background: var(--green-soft);
+  color: var(--green);
+  font-size: 9px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.receipt-capture-button:hover,
+.receipt-capture-button:focus-within {
+  border-style: solid;
+}
+
+#receipt-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+#receipt-status {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.expense-form.saving .receipt-capture-button {
+  opacity: .55;
+  pointer-events: none;
+}
+
 .transaction-history {
   margin-top: 12px;
   padding: 10px 11px;
@@ -446,6 +552,9 @@
   .transaction-history { padding: 9px; }
   .transaction-history-list { max-height: 125px; }
   .transaction-history-event { align-items: flex-start; flex-direction: column; gap: 0; }
+  .receipt-preview img { max-height: 110px; }
+  .receipt-controls { align-items: flex-start; flex-direction: column; gap: 5px; }
+  .receipt-capture-button { width: 100%; min-height: 34px; }
   .split-person { grid-template-columns: minmax(0, 1fr) 102px; gap: 5px; min-height: 41px; padding: 3px 1px; }
   .split-person-toggle { gap: 6px; padding-left: 2px; }
   .split-person .allocation-input { height: 33px; }

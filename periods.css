@@ -95,6 +95,15 @@
   vertical-align: 1px;
 }
 
+.receipt-label {
+  margin-left: 6px;
+  color: var(--green);
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: .3px;
+  text-transform: uppercase;
+}
+
 .audit-label {
   margin-left: 6px;
   padding: 2px 5px;

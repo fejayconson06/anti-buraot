@@ -91,11 +91,33 @@ service cloud.firestore {
         allow read: if canView(groupId);
         allow write: if canWrite(groupId) || canAccessAfter(groupId);
       }
+
+      match /receipts/{receiptId} {
+        allow read: if canView(groupId);
+
+        allow create, update: if (canWrite(groupId) || canAccessAfter(groupId))
+          && request.resource.data.keys().hasOnly([
+            'dataUrl', 'name', 'contentType', 'size', 'updatedAt'
+          ])
+          && request.resource.data.dataUrl is string
+          && request.resource.data.dataUrl.size() <= 850000
+          && request.resource.data.dataUrl.matches('data:image/.*;base64,.*')
+          && request.resource.data.contentType is string
+          && request.resource.data.contentType.matches('image/.*')
+          && request.resource.data.size is int
+          && request.resource.data.size <= 563200;
+
+        allow delete: if canWrite(groupId) || canAccessAfter(groupId);
+      }
     }
 
     match /invites/{token} {
       allow get: if signedIn();
-      allow list: if false;
+      allow list: if signedIn()
+        && (
+          resource.data.createdBy == request.auth.uid
+          || get(/databases/$(database)/documents/groups/$(resource.data.groupId)).data.visibility == 'public'
+        );
 
       allow create: if signedIn()
         && request.resource.data.createdBy == request.auth.uid
@@ -103,7 +125,10 @@ service cloud.firestore {
         && get(/databases/$(database)/documents/groups/$(request.resource.data.groupId)).data.visibility == 'private';
 
       allow update, delete: if signedIn()
-        && resource.data.createdBy == request.auth.uid;
+        && (
+          resource.data.createdBy == request.auth.uid
+          || get(/databases/$(database)/documents/groups/$(resource.data.groupId)).data.visibility == 'public'
+        );
     }
   }
 }

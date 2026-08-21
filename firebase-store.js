@@ -157,12 +157,23 @@ export async function connectFirebaseStore(onGroupsChanged, onError = console.er
       if (currentIds.has(groupId)) continue;
       const previous = known.get(groupId);
       if (previous.visibility !== "public" && previous.ownerUid !== uid) continue;
-      const [expenseSnapshot, paymentSnapshot] = await Promise.all([
+      const inviteQuery = previous.visibility === "public"
+        ? query(collection(db, "invites"), where("groupId", "==", groupId))
+        : query(
+          collection(db, "invites"),
+          where("groupId", "==", groupId),
+          where("createdBy", "==", uid),
+        );
+      const [expenseSnapshot, paymentSnapshot, receiptSnapshot, inviteSnapshot] = await Promise.all([
         getDocs(collection(db, "groups", groupId, "expenses")),
         getDocs(collection(db, "groups", groupId, "payments")),
+        getDocs(collection(db, "groups", groupId, "receipts")),
+        getDocs(inviteQuery),
       ]);
       expenseSnapshot.docs.forEach(item => operations.push({ type: "delete", reference: item.ref }));
       paymentSnapshot.docs.forEach(item => operations.push({ type: "delete", reference: item.ref }));
+      receiptSnapshot.docs.forEach(item => operations.push({ type: "delete", reference: item.ref }));
+      inviteSnapshot.docs.forEach(item => operations.push({ type: "delete", reference: item.ref }));
       operations.push({ type: "delete", reference: doc(db, "groups", groupId) });
     }
 
@@ -268,12 +279,44 @@ export async function connectFirebaseStore(onGroupsChanged, onError = console.er
     return token;
   }
 
+  async function saveReceiptText(groupId, expenseId, dataUrl, metadata = {}) {
+    await setDoc(doc(db, "groups", groupId, "receipts", expenseId), {
+      dataUrl,
+      name: metadata.name || "receipt.jpg",
+      contentType: metadata.contentType || "image/jpeg",
+      size: metadata.size || 0,
+      updatedAt: metadata.updatedAt || new Date().toISOString(),
+    });
+    return {
+      documentId: expenseId,
+      name: metadata.name || "receipt.jpg",
+      contentType: metadata.contentType || "image/jpeg",
+      size: metadata.size || 0,
+      updatedAt: metadata.updatedAt || new Date().toISOString(),
+    };
+  }
+
+  async function getReceiptData(groupId, expenseId) {
+    const snapshot = await getDoc(doc(db, "groups", groupId, "receipts", expenseId));
+    if (!snapshot.exists()) throw new Error("The receipt image is missing.");
+    return snapshot.data().dataUrl;
+  }
+
+  function deleteReceipt(groupId, expenseId) {
+    const batch = writeBatch(db);
+    batch.delete(doc(db, "groups", groupId, "receipts", expenseId));
+    return batch.commit();
+  }
+
   return {
     uid,
     groups: remoteGroups,
     inviteResult,
     sync,
     createInvite,
+    saveReceiptText,
+    getReceiptData,
+    deleteReceipt,
     unsubscribe() {
       unsubscribeAccess();
       unsubscribePublic();
