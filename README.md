@@ -11,7 +11,9 @@ waiting, while each day's add button assigns expenses to that date.
 
 ## Run locally
 
-Open `index.html` in any browser. No install, build, or local server is required.
+Serve the folder with a local web server, then open its HTTP URL in a browser.
+The app loads the Firebase web SDK as ES modules, so opening `index.html`
+through a `file://` URL is not supported.
 
 ## Publish with GitHub Pages
 
@@ -20,9 +22,12 @@ Open `index.html` in any browser. No install, build, or local server is required
 3. Under **Build and deployment**, choose **Deploy from a branch**.
 4. Select `main` and `/ (root)`, then click **Save**.
 
-## Firebase later
+## Firebase storage
 
-The current version stores the group and expenses in the browser's local
-storage. Data stays on that device and browser. The small `dataStore` layer in
-`app.js` can be replaced with Firebase later without changing the interface or
-split calculations.
+Groups, expenses, deleted-expense audit records, and settlements are read from
+and written directly to Cloud Firestore. Browser local storage is used only to
+remember the selected **Viewing as** identity for each group.
+
+Anonymous Firebase Authentication identifies the browser installation for
+group access. Public groups are readable and writable by every authenticated
+app visitor. Private groups require an invite link.

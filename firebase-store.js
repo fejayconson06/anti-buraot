@@ -104,7 +104,7 @@ async function commitOperations(operations) {
   }
 }
 
-export async function connectFirebaseStore(localGroups, onGroupsChanged, onError = console.error) {
+export async function connectFirebaseStore(onGroupsChanged, onError = console.error) {
   const user = auth.currentUser || (await signInAnonymously(auth)).user;
   const uid = user.uid;
   const inviteToken = new URLSearchParams(window.location.search).get("invite");
@@ -143,11 +143,6 @@ export async function connectFirebaseStore(localGroups, onGroupsChanged, onError
   const initialDocuments = new Map();
   [...initialAccessSnapshot.docs, ...initialPublicSnapshot.docs].forEach(item => initialDocuments.set(item.id, item));
   const remoteGroups = await Promise.all([...initialDocuments.values()].map(hydrateGroup));
-  const mergedGroups = [...remoteGroups];
-  const remoteIds = new Set(remoteGroups.map(group => group.id));
-  localGroups.forEach(group => {
-    if (!remoteIds.has(group.id)) mergedGroups.push({ ...clean(group), ownerUid: uid, accessUids: [uid] });
-  });
 
   let known = createKnownSnapshot(remoteGroups, uid);
   let syncQueue = Promise.resolve();
@@ -225,8 +220,6 @@ export async function connectFirebaseStore(localGroups, onGroupsChanged, onError
     return syncQueue;
   }
 
-  if (mergedGroups.length) await syncNow(mergedGroups);
-
   let latestAccessSnapshot = initialAccessSnapshot;
   let latestPublicSnapshot = initialPublicSnapshot;
   let refreshVersion = 0;
@@ -273,7 +266,7 @@ export async function connectFirebaseStore(localGroups, onGroupsChanged, onError
 
   return {
     uid,
-    groups: mergedGroups,
+    groups: remoteGroups,
     inviteResult,
     sync,
     createInvite,

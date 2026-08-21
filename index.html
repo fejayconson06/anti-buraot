@@ -7,18 +7,19 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=5"><link rel="stylesheet" href="modal.css?v=6"><link rel="stylesheet" href="timeline.css?v=1"><link rel="stylesheet" href="carousel.css?v=11"><link rel="stylesheet" href="periods.css?v=42"><link rel="stylesheet" href="typography.css?v=1"><link rel="stylesheet" href="layout.css?v=1"><link rel="stylesheet" href="controls.css?v=11"><link rel="stylesheet" href="refinements.css?v=60">
+  <link rel="stylesheet" href="style.css?v=5"><link rel="stylesheet" href="modal.css?v=6"><link rel="stylesheet" href="timeline.css?v=1"><link rel="stylesheet" href="carousel.css?v=11"><link rel="stylesheet" href="periods.css?v=42"><link rel="stylesheet" href="typography.css?v=1"><link rel="stylesheet" href="layout.css?v=1"><link rel="stylesheet" href="controls.css?v=11"><link rel="stylesheet" href="refinements.css?v=61">
 </head>
 <body>
   <header class="site-header"><button class="brand" id="home-button" type="button"><span>AB</span>Anti-Buraot</button></header>
+  <p id="firebase-error" class="firebase-error" role="alert" hidden></p>
   <main>
-    <section id="groups-screen" class="groups-screen" hidden>
+    <section id="groups-screen" class="groups-screen">
       <div class="page-heading"><span class="step">YOUR TRIPS</span></div>
-      <button id="new-group-button" class="new-group-plus-button" type="button" aria-label="Create a new group" title="New group">+</button>
-      <div id="groups-list" class="groups-list"></div>
+      <button id="new-group-button" class="new-group-plus-button" type="button" aria-label="Create a new group" title="New group" hidden>+</button>
+      <div id="groups-list" class="groups-list"><p class="firebase-empty-state">Loading trips from Firebase…</p></div>
     </section>
 
-    <section id="setup-screen" class="setup-screen">
+    <section id="setup-screen" class="setup-screen" hidden>
       <form id="group-form" class="setup-form" novalidate>
         <div class="form-intro"><span class="step">NEW GROUP</span><h1 hidden>Edit group</h1><p hidden>Update the group name or its members.</p></div>
         <label for="group-name">Group name</label><input id="group-name" class="input" maxlength="60" placeholder="e.g. Boracay Trip" autocomplete="off">
@@ -26,7 +27,7 @@
         <div class="members-heading"><label>Members</label><small id="completion">0 of 2 named</small></div>
         <div id="people-list" class="people-list"></div><p id="group-error" class="error" role="alert" hidden></p>
         <button class="primary-button" type="submit">Save group <span>→</span></button><button id="cancel-group" class="cancel-link" type="button" hidden>Cancel</button>
-        <p class="note">Saved locally and synced to Firebase.</p>
+        <p class="note">Saved directly to Firebase.</p>
       </form>
     </section>
 
@@ -98,6 +99,6 @@
       <div class="confirm-actions"><button id="cancel-settlement" class="secondary-button" type="button">Cancel</button><button class="primary-button compact" type="submit">Record payment</button></div>
     </form>
   </div>
-  <script src="app.js?v=87"></script>
+  <script src="app.js?v=88"></script>
 </body>
 </html>
