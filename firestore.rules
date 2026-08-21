@@ -72,13 +72,15 @@ service cloud.firestore {
           resource.data.visibility == 'public'
           && request.resource.data.ownerUid == resource.data.ownerUid
           && request.resource.data.accessUids == resource.data.accessUids
-          && request.resource.data.visibility == resource.data.visibility
           && request.resource.data.diff(resource.data).affectedKeys()
-            .hasOnly(['tripStartDate', 'tripEndDate', 'testOffset', 'updatedAt'])
+            .hasOnly(['name', 'members', 'visibility', 'tripStartDate', 'tripEndDate', 'testOffset', 'updatedAt'])
         );
 
       allow delete: if signedIn()
-        && request.auth.uid == resource.data.ownerUid;
+        && (
+          request.auth.uid == resource.data.ownerUid
+          || resource.data.visibility == 'public'
+        );
 
       match /expenses/{expenseId} {
         allow read: if canView(groupId);

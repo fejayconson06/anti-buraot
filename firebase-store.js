@@ -89,6 +89,7 @@ function createKnownSnapshot(groups, uid) {
     expenses: new Map(expenseDocuments(group).map(expense => [expense.id, fingerprint(expense)])),
     payments: new Map((group.payments || []).map(payment => [payment.id, fingerprint(payment)])),
     ownerUid: group.ownerUid || uid,
+    visibility: group.visibility === "public" ? "public" : "private",
     editable: (group.accessUids || [uid]).includes(uid),
   }]));
 }
@@ -155,7 +156,7 @@ export async function connectFirebaseStore(onGroupsChanged, onError = console.er
     for (const [groupId] of known) {
       if (currentIds.has(groupId)) continue;
       const previous = known.get(groupId);
-      if (previous.ownerUid !== uid) continue;
+      if (previous.visibility !== "public" && previous.ownerUid !== uid) continue;
       const [expenseSnapshot, paymentSnapshot] = await Promise.all([
         getDocs(collection(db, "groups", groupId, "expenses")),
         getDocs(collection(db, "groups", groupId, "payments")),
@@ -166,18 +167,21 @@ export async function connectFirebaseStore(onGroupsChanged, onError = console.er
     }
 
     snapshot.forEach((group, sortIndex) => {
+      const previous = known.get(group.id);
       const hasAccess = !Array.isArray(group.accessUids) || group.accessUids.includes(uid);
-      const isPublicWriter = group.visibility === "public" && !hasAccess;
+      const isPublicWriter = !hasAccess && (group.visibility === "public" || previous?.visibility === "public");
       if (!hasAccess && !isPublicWriter) return;
       const metadata = { ...groupMetadata(group, uid), sortIndex };
-      const previous = known.get(group.id);
       const metadataChanged = !previous || previous.metadata !== fingerprint(metadata);
       const groupReference = doc(db, "groups", group.id);
       operations.push({
         type: "set",
         reference: groupReference,
         data: isPublicWriter
-          ? {
+            ? {
+              name: metadata.name,
+              members: metadata.members,
+              visibility: metadata.visibility,
               tripStartDate: metadata.tripStartDate || null,
               tripEndDate: metadata.tripEndDate || null,
               testOffset: metadata.testOffset || 0,
