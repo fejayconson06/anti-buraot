@@ -28,7 +28,8 @@ On `http://` and `https://`, groups, expenses, deleted-expense audit records,
 settlements, and compressed receipt images are read from and written directly
 to Cloud Firestore. Receipts are kept in separate documents and loaded only
 when their transaction is opened. Browser local storage is used only to
-remember the selected **Viewing as** identity for each group.
+remember the device's member identity and last **Viewing as** selection for
+each group.
 
 On `file://`, Firebase is not loaded and all trip data is stored in that
 browser's local storage.

@@ -110,6 +110,42 @@ html {
   border-radius: 11px;
 }
 
+.group-card.device-identified {
+  cursor: pointer;
+  transition: border-color .16s ease, box-shadow .16s ease, transform .16s ease;
+}
+
+.group-card.device-identified:hover,
+.group-card.device-identified:focus-visible {
+  border-color: #a9c8b6;
+  box-shadow: 0 7px 20px rgba(25, 107, 71, .08);
+  outline: none;
+}
+
+.group-card-locked-total {
+  min-width: 92px;
+  text-align: right;
+}
+
+.group-card-locked-total small,
+.group-card-locked-total strong {
+  display: block;
+  white-space: nowrap;
+}
+
+.group-card-locked-total small {
+  margin: 0 0 3px;
+  color: var(--muted);
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: .45px;
+  text-transform: uppercase;
+}
+
+.group-card-locked-total strong {
+  font-size: 12px;
+}
+
 .group-card > .group-card-icon {
   width: 40px;
   height: 40px;
@@ -173,6 +209,16 @@ html {
   background: #fff0ed;
   color: var(--danger);
   letter-spacing: .4px;
+}
+
+.open-trip-as .identity-choice {
+  width: auto;
+  max-width: 150px;
+  padding: 0 9px;
+  border-radius: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .open-trip-as .accountant-option:hover,
@@ -258,6 +304,7 @@ html {
 }
 
 .edit-group-button,
+.audit-group-button,
 .delete-group-button {
   width: 25px;
   height: 25px;
@@ -277,6 +324,17 @@ html {
 .edit-group-button:focus-visible {
   background: var(--green-soft);
   color: var(--green);
+  outline: none;
+}
+
+.audit-group-button {
+  color: var(--danger);
+}
+
+.audit-group-button:hover,
+.audit-group-button:focus-visible {
+  background: #fff0ed;
+  color: var(--danger);
   outline: none;
 }
 
@@ -402,6 +460,25 @@ html {
   text-transform: none;
 }
 
+.group-identity .viewing-as-label button {
+  margin: 0 0 0 4px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--green);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.group-identity .viewing-as-label button:hover,
+.group-identity .viewing-as-label button:focus-visible {
+  color: var(--ink);
+  outline: none;
+}
+
 .group-title-row,
 .group-title-row h1 {
   min-width: 0;
@@ -440,6 +517,18 @@ html {
 }
 
 @media (max-width: 760px) {
+  .group-card.device-identified {
+    grid-template-columns: 42px minmax(0, 1fr) auto;
+  }
+
+  .group-card-locked-total {
+    min-width: 0;
+  }
+
+  .group-card-locked-total strong {
+    font-size: 10px;
+  }
+
   .open-trip-as {
     grid-column: 1 / -1;
     min-width: 0;
@@ -463,7 +552,7 @@ html {
     scrollbar-width: none;
   }
 
-  .open-trip-as button:not(.accountant-option) {
+  .open-trip-as button:not(.accountant-option):not(.identity-choice) {
     min-width: 28px;
     max-width: 28px;
     flex: 0 0 28px;
@@ -472,6 +561,12 @@ html {
 
   .open-trip-as .accountant-option {
     min-width: max-content;
+    flex: 0 0 auto;
+  }
+
+  .open-trip-as .identity-choice {
+    min-width: max-content;
+    max-width: 150px;
     flex: 0 0 auto;
   }
 
