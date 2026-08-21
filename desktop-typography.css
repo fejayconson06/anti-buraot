@@ -1,0 +1,133 @@
+@media (min-width: 701px) {
+  .brand { font-size: 16px; }
+  .brand span { font-size: 12px; }
+
+  .step,
+  .members-heading small,
+  .note,
+  .group-total,
+  .open-trip-as > small,
+  .trip-footer .quiet-button,
+  .period-marker small,
+  .header-summary .summary-total small,
+  .header-summary .spending-summary-card > small,
+  .header-summary .summary-balance-section > small,
+  .settlement-summary-card > small,
+  .settlement-history > small,
+  .relation-date-group h3,
+  .modal-card .step,
+  .transaction-history h3 {
+    font-size: 10px !important;
+  }
+
+  label,
+  .add-member-button,
+  .quiet-button,
+  .link-button,
+  .open-trip-as button,
+  .group-identity .viewing-as-label,
+  .date-box span,
+  .day-header > div:nth-child(2) > small,
+  .day-total small,
+  .audit-note,
+  .viewer-expense-amount small,
+  .settlement-history em,
+  .duplicate-detail-row span small,
+  .transaction-history-change > small,
+  .receipt-heading small,
+  #receipt-status,
+  .modal-card label {
+    font-size: 9px !important;
+  }
+
+  .form-intro p { font-size: 16px; }
+  .form-intro h1 { font-size: 36px; }
+  .setup-form > .primary-button,
+  .group-card p,
+  .group-card small,
+  .group-identity .step span,
+  .day-empty,
+  .end-trip-button,
+  .desktop-split-details,
+  .expense-copy p,
+  .relation-detail-row strong,
+  .relation-detail-row b,
+  .invite-card > p,
+  .firebase-error,
+  .modal-card .split-header,
+  .split-person-toggle strong,
+  .transaction-history-item,
+  .transaction-history-event strong,
+  .transaction-history-empty,
+  .receipt-capture-button,
+  .modal-card .error,
+  .modal-card .form-actions button {
+    font-size: 11px;
+  }
+
+  .group-card h2,
+  .group-card > .group-card-icon { font-size: 16px; }
+  .group-status-badges span,
+  .draft-label,
+  .audit-label,
+  .expense-viewer-meta,
+  .transaction-history-event time { font-size: 8px; }
+
+  .group-identity .step strong { font-size: 21px; }
+  .group-header-main > .quiet-button { font-size: 10px; }
+  .trip-view-tabs button { font-size: 12px; }
+
+  .date-box strong { font-size: 20px; }
+  .day-header h3 { font-size: 15px; }
+  .day-total strong { font-size: 14px; }
+  .period-icon { font-size: 11px; }
+  .period-expenses .expense-icon { font-size: 13px; }
+  .period-expenses .expense-copy h3 { font-size: 14px; }
+  .viewer-expense-amount strong { font-size: 14px; }
+  .expense-actions button { font-size: 17px; }
+  .period-add-button { font-size: 20px; }
+
+  .header-summary .summary-bar > .summary-icon { font-size: 19px; }
+  .header-summary .summary-total strong { font-size: 20px; }
+  .header-summary .summary-total span,
+  .header-summary .summary-bar span { font-size: 11px; }
+  .member-summary-person strong { font-size: 14px; }
+  .member-summary-paid small,
+  .member-summary-balance small,
+  .member-summary-card .spending-share-button small { font-size: 10px !important; }
+  .member-summary-paid b,
+  .member-summary-balance b,
+  .member-summary-card .spending-share-button b,
+  .spending-breakdown b,
+  .spending-breakdown em,
+  .spending-share-button,
+  .header-summary .balance-item div strong,
+  .header-summary .balance-item span strong,
+  .header-summary .balance-item > b,
+  .header-summary .viewer-settled { font-size: 12px; }
+
+  .settlement-summary-card .settlement > div { font-size: 11px; }
+  .settlement-summary-card .settlement > b { font-size: 16px; }
+  .record-settlement-button { font-size: 9px; }
+  .settlement-history > div { font-size: 10px; }
+  .settlement-history em { font-size: 9px; }
+  .settlement-history > div > b { font-size: 12px; }
+
+  .modal-card .section-title h2,
+  .confirm-card h2,
+  .invite-card h2,
+  .settlement-form h2 { font-size: 19px; }
+  #expense-modal .expense-form input { font-size: 13.5px !important; }
+  .payer-list button,
+  .modal-card .split-tabs button { font-size: 10px; }
+  .split-person .allocation-input input { font-size: 12px; }
+  .transaction-history-change { font-size: 10px; }
+
+  .relation-summary-card h2 { font-size: 22px; }
+  .relation-summary-card > strong { font-size: 27px; }
+  .relation-close-button { font-size: 22px; }
+  .confirm-card p { font-size: 11px; }
+  .confirm-actions button { font-size: 11px; }
+  .invite-link-row input,
+  .firebase-empty-state { font-size: 12px; }
+}
