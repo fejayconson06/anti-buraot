@@ -37,6 +37,71 @@ html {
   gap: 8px;
 }
 
+.empty-group-card {
+  min-height: 150px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed #cbd1cd;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, .55);
+  color: var(--muted);
+  text-align: center;
+}
+
+.empty-group-card strong {
+  margin-top: 12px;
+  color: var(--ink);
+  font-size: 12px;
+}
+
+.empty-group-card small {
+  margin-top: 4px;
+  font-size: 9px;
+}
+
+.broken-card-icon {
+  position: relative;
+  width: 58px;
+  height: 40px;
+}
+
+.broken-card-icon::before,
+.broken-card-icon::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 31px;
+  height: 40px;
+  border: 2px solid #aeb6b1;
+  background: linear-gradient(#dfe4e1 0 8px, transparent 8px);
+}
+
+.broken-card-icon::before {
+  left: 0;
+  border-radius: 7px 0 0 7px;
+  clip-path: polygon(0 0, 100% 0, 76% 34%, 100% 54%, 70% 100%, 0 100%);
+}
+
+.broken-card-icon::after {
+  right: 0;
+  border-radius: 0 7px 7px 0;
+  clip-path: polygon(24% 0, 100% 0, 100% 100%, 30% 100%, 0 55%, 24% 35%);
+}
+
+.broken-card-icon span {
+  position: absolute;
+  z-index: 1;
+  right: 8px;
+  bottom: 7px;
+  width: 12px;
+  height: 3px;
+  border-radius: 2px;
+  background: #aeb6b1;
+}
+
 .group-card {
   grid-template-columns: 40px minmax(0, 1fr) auto;
   gap: 11px;
