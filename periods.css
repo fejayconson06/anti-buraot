@@ -215,14 +215,7 @@ button.audit-label:focus-visible {
 }
 
 .expense-activity-labels {
-  margin-left: 4px;
-  display: inline-flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 2px 8px;
-  color: inherit;
-  font: inherit;
-  line-height: inherit;
+  display: none;
 }
 
 .expense-activity-labels b {

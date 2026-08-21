@@ -39,6 +39,8 @@
   min-height: 280px;
   opacity: 1;
   transform: none;
+  clip-path: inset(0 round 13px);
+  backface-visibility: hidden;
   border-color: transparent;
   box-shadow: none;
   transition: opacity .3s ease, transform .35s ease, box-shadow .35s ease;
@@ -110,9 +112,9 @@
 }
 
 @media (max-width: 540px) {
-  .day-carousel { grid-template-columns: minmax(0, 1fr); padding: 4px 0; }
+  .day-carousel { grid-template-columns: minmax(0, 1fr); margin-inline: -10px; padding: 4px 0; }
   .carousel-button { display: none; margin-top: 0; }
-  .day-viewport { filter: drop-shadow(0 8px 9px rgba(22, 53, 35, .14)); }
+  .day-viewport { filter: drop-shadow(0 7px 7px rgba(22, 53, 35, .24)); }
   .timeline-track { gap: 20px !important; padding-inline: 10px; }
   .timeline-track > .day-panel { flex-basis: 100%; width: 100%; min-height: 290px; }
   .timeline-track > .day-panel.active { box-shadow: none; }

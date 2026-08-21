@@ -1,5 +1,5 @@
 #expense-modal .expense-form input {
-  font-size: 16px !important;
+  font-size: 12px !important;
 }
 
 html {
@@ -461,6 +461,23 @@ html {
     justify-content: flex-start;
     overflow-x: auto;
     scrollbar-width: none;
+  }
+
+  .open-trip-as button:not(.accountant-option) {
+    min-width: 28px;
+    max-width: 28px;
+    flex: 0 0 28px;
+    aspect-ratio: 1;
+  }
+
+  .open-trip-as .accountant-option {
+    min-width: max-content;
+    flex: 0 0 auto;
+  }
+
+  .open-trip-as > div.has-more-avatars {
+    -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 28px), transparent 100%);
+    mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 28px), transparent 100%);
   }
 
   .open-trip-as > div::-webkit-scrollbar {
@@ -1602,6 +1619,10 @@ html {
 }
 
 @media (max-width: 540px) {
+  #expense-modal .expense-form input {
+    font-size: 16px !important;
+  }
+
   .site-header {
     height: 48px;
     padding-inline: 14px;

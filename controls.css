@@ -457,7 +457,8 @@
   .modal-card .form-actions .secondary-button { width: auto; flex: 0 0 auto; }
   .modal-card .form-actions .draft-button { flex: 0 0 auto; padding-inline: 10px; }
   .modal-card .form-actions .primary-button.compact { width: auto; flex: 1; }
-  .period-expenses .expense-item { position: relative; padding-right: 40px; }
-  .period-expenses .expense-actions { position: absolute; top: 50%; right: 7px; grid-column: auto; grid-row: auto; transform: translateY(-50%); }
+  .period-expenses .expense-item { grid-template-columns: 30px minmax(0, 1fr) auto 18px; gap: 4px; padding-right: 4px; }
+  .period-expenses .expense-actions { position: static; width: 18px; flex-basis: 18px; grid-column: 4; grid-row: 1; align-self: center; margin: 0; transform: none; }
+  .period-expenses .expense-actions button { width: 18px; height: 20px; padding: 0; font-size: 16px; line-height: 1; }
   .confirm-card { width: calc(100% - 28px); padding: 18px; }
 }
