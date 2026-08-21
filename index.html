@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=5"><link rel="stylesheet" href="modal.css?v=6"><link rel="stylesheet" href="timeline.css?v=1"><link rel="stylesheet" href="carousel.css?v=11"><link rel="stylesheet" href="periods.css?v=42"><link rel="stylesheet" href="typography.css?v=1"><link rel="stylesheet" href="layout.css?v=1"><link rel="stylesheet" href="controls.css?v=11"><link rel="stylesheet" href="refinements.css?v=59">
+  <link rel="stylesheet" href="style.css?v=5"><link rel="stylesheet" href="modal.css?v=6"><link rel="stylesheet" href="timeline.css?v=1"><link rel="stylesheet" href="carousel.css?v=11"><link rel="stylesheet" href="periods.css?v=42"><link rel="stylesheet" href="typography.css?v=1"><link rel="stylesheet" href="layout.css?v=1"><link rel="stylesheet" href="controls.css?v=11"><link rel="stylesheet" href="refinements.css?v=60">
 </head>
 <body>
   <header class="site-header"><button class="brand" id="home-button" type="button"><span>AB</span>Anti-Buraot</button></header>
@@ -22,6 +22,7 @@
       <form id="group-form" class="setup-form" novalidate>
         <div class="form-intro"><span class="step">NEW GROUP</span><h1 hidden>Edit group</h1><p hidden>Update the group name or its members.</p></div>
         <label for="group-name">Group name</label><input id="group-name" class="input" maxlength="60" placeholder="e.g. Boracay Trip" autocomplete="off">
+        <fieldset class="group-visibility"><legend>Group visibility</legend><label><input type="radio" name="group-visibility" value="private" checked><span><strong>Private</strong><small>Only people with an invite can access it.</small></span></label><label><input type="radio" name="group-visibility" value="public"><span><strong>Public</strong><small>Everyone using the app can view and record changes.</small></span></label></fieldset>
         <div class="members-heading"><label>Members</label><small id="completion">0 of 2 named</small></div>
         <div id="people-list" class="people-list"></div><p id="group-error" class="error" role="alert" hidden></p>
         <button class="primary-button" type="submit">Save group <span>→</span></button><button id="cancel-group" class="cancel-link" type="button" hidden>Cancel</button>
@@ -67,6 +68,17 @@
       <div class="confirm-actions"><button id="cancel-end-trip" class="secondary-button" type="button">Keep ongoing</button><button id="confirm-end-trip" class="danger-button" type="button">End trip</button></div>
     </section>
   </div>
+  <div id="invite-modal" class="modal" hidden>
+    <button id="invite-backdrop" class="modal-backdrop" type="button" aria-label="Close invite"></button>
+    <section class="invite-card modal-card" role="dialog" aria-modal="true" aria-labelledby="invite-title" aria-describedby="invite-message">
+      <span class="step" id="invite-kicker">PRIVATE GROUP</span>
+      <h2 id="invite-title">Invite people</h2>
+      <p id="invite-message">Create a private link for this group.</p>
+      <div id="invite-link-row" class="invite-link-row" hidden><input id="invite-link" type="text" readonly aria-label="Private invite link"><button id="copy-invite" class="secondary-button" type="button">Copy</button></div>
+      <p id="invite-status" class="invite-status" role="status" hidden></p>
+      <button id="close-invite" class="primary-button compact" type="button">Done</button>
+    </section>
+  </div>
   <div id="relation-modal" class="modal" hidden>
     <button id="relation-backdrop" class="modal-backdrop" type="button" aria-label="Close computation summary"></button>
     <section class="relation-summary-card" role="dialog" aria-modal="true" aria-labelledby="relation-title">
@@ -86,6 +98,6 @@
       <div class="confirm-actions"><button id="cancel-settlement" class="secondary-button" type="button">Cancel</button><button class="primary-button compact" type="submit">Record payment</button></div>
     </form>
   </div>
-  <script src="app.js?v=84"></script>
+  <script src="app.js?v=86"></script>
 </body>
 </html>
