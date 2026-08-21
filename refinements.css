@@ -8,7 +8,7 @@ html {
 }
 
 .brand span {
-  background: var(--danger);
+  background: var(--green);
 }
 
 .site-header {
