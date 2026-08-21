@@ -909,14 +909,6 @@ html {
   cursor: not-allowed;
 }
 
-.open-trip-as button.saved-viewer {
-  box-shadow: 0 0 0 2px var(--green-soft), 0 0 0 3px var(--green);
-}
-
-.open-trip-as button.accountant-option.saved-viewer {
-  box-shadow: 0 0 0 2px #fff1ef, 0 0 0 3px var(--danger);
-}
-
 .group-card.read-only-group {
   border-style: dashed;
 }
@@ -1417,7 +1409,7 @@ html {
   min-height: 76px;
   padding: 13px 15px;
   display: grid;
-  grid-template-columns: 42px minmax(0, 1fr) minmax(105px, auto) minmax(105px, auto);
+  grid-template-columns: 42px minmax(0, 1fr) minmax(285px, auto);
   align-items: center;
   gap: 12px;
   border: 1px solid var(--line);
@@ -1438,13 +1430,16 @@ html {
 }
 
 .member-summary-person,
+.member-summary-values,
+.member-summary-paid,
 .member-summary-balance,
 .member-summary-card .spending-share-button {
   min-width: 0;
 }
 
 .member-summary-person strong,
-.member-summary-person span,
+.member-summary-paid small,
+.member-summary-paid b,
 .member-summary-balance small,
 .member-summary-balance b,
 .member-summary-card .spending-share-button small,
@@ -1461,7 +1456,7 @@ html {
   white-space: nowrap;
 }
 
-.member-summary-person span,
+.member-summary-paid small,
 .member-summary-balance small,
 .member-summary-card .spending-share-button small {
   margin-top: 3px;
@@ -1470,22 +1465,36 @@ html {
   font-weight: 500;
 }
 
+.member-summary-paid small,
 .member-summary-balance small,
 .member-summary-card .spending-share-button small {
   letter-spacing: .45px;
   text-transform: uppercase;
 }
 
+.member-summary-paid,
 .member-summary-balance,
 .member-summary-card .spending-share-button {
   text-align: right;
 }
 
+.member-summary-paid b,
 .member-summary-balance b,
 .member-summary-card .spending-share-button b {
   margin-top: 3px;
   font-size: 11px;
   font-weight: 800;
+}
+
+.member-summary-values {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(86px, 1fr));
+  align-items: center;
+  gap: 4px;
+}
+
+.member-summary-paid {
+  padding: 6px 8px;
 }
 
 .member-summary-balance b.negative {
@@ -1549,9 +1558,11 @@ html {
 
 @media (max-width: 540px) {
   .member-summary-card {
-    grid-template-columns: 38px minmax(0, 1fr) auto auto;
-    grid-template-rows: auto;
-    gap: 8px;
+    grid-template-columns: 38px minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    column-gap: 9px;
+    row-gap: 2px;
+    align-items: center;
   }
 
   .member-summary-avatar {
@@ -1568,25 +1579,23 @@ html {
     align-self: center;
   }
 
-  .member-summary-card .spending-share-button {
-    grid-column: 3;
-    grid-row: 1;
-    padding: 5px 7px;
-    align-self: center;
-    text-align: right;
+  .member-summary-values {
+    grid-column: 2;
+    grid-row: 2;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2px;
+    width: 100%;
+  }
+
+  .member-summary-paid,
+  .member-summary-card .spending-share-button,
+  .member-summary-balance {
+    padding: 4px 5px;
   }
 
   .member-summary-card .spending-share-button small,
   .member-summary-card .spending-share-button b {
     display: block;
-  }
-
-  .member-summary-balance {
-    grid-column: 4;
-    grid-row: 1;
-    padding: 5px 7px;
-    align-self: center;
-    text-align: right;
   }
 
 }

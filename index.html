@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=5"><link rel="stylesheet" href="modal.css?v=6"><link rel="stylesheet" href="timeline.css?v=1"><link rel="stylesheet" href="carousel.css?v=11"><link rel="stylesheet" href="periods.css?v=42"><link rel="stylesheet" href="typography.css?v=1"><link rel="stylesheet" href="layout.css?v=1"><link rel="stylesheet" href="controls.css?v=11"><link rel="stylesheet" href="refinements.css?v=62">
+  <link rel="stylesheet" href="style.css?v=5"><link rel="stylesheet" href="modal.css?v=6"><link rel="stylesheet" href="timeline.css?v=1"><link rel="stylesheet" href="carousel.css?v=11"><link rel="stylesheet" href="periods.css?v=42"><link rel="stylesheet" href="typography.css?v=1"><link rel="stylesheet" href="layout.css?v=1"><link rel="stylesheet" href="controls.css?v=11"><link rel="stylesheet" href="refinements.css?v=65">
 </head>
 <body>
   <header class="site-header"><button class="brand" id="home-button" type="button"><span>AB</span>Anti-Buraot</button></header>
@@ -27,7 +27,7 @@
         <div class="members-heading"><label>Members</label><small id="completion">0 of 2 named</small></div>
         <div id="people-list" class="people-list"></div><p id="group-error" class="error" role="alert" hidden></p>
         <button class="primary-button" type="submit">Save group <span>→</span></button><button id="cancel-group" class="cancel-link" type="button" hidden>Cancel</button>
-        <p class="note">Saved directly to Firebase.</p>
+        <p id="storage-note" class="note">Saved directly to Firebase.</p>
       </form>
     </section>
 
@@ -40,7 +40,7 @@
       <div id="expenses-view" class="trip-grid">
         <section><span id="day-position" hidden></span><div id="day-dots" class="day-dots" aria-hidden="true"></div><div class="day-carousel"><button id="previous-day" class="carousel-button" type="button" aria-label="Previous day">‹</button><div class="day-viewport"><div id="timeline-list" class="timeline-track"></div></div><button id="next-day" class="carousel-button" type="button" aria-label="Next day">›</button></div><button id="end-trip-button" class="end-trip-button" type="button" hidden>End trip</button></section>
       </div>
-      <div id="expenses-footer" class="trip-footer"><button id="add-test-day" class="quiet-button" type="button">Test: add next day</button></div>
+      <div id="expenses-footer" class="trip-footer"><button id="add-test-day" class="quiet-button" type="button">Day cards are automatically generated. Click here to manually add a new day..</button></div>
     </section>
   </main>
 
@@ -99,6 +99,6 @@
       <div class="confirm-actions"><button id="cancel-settlement" class="secondary-button" type="button">Cancel</button><button class="primary-button compact" type="submit">Record payment</button></div>
     </form>
   </div>
-  <script src="app.js?v=89"></script>
+  <script src="app.js?v=91"></script>
 </body>
 </html>

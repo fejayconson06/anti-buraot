@@ -11,9 +11,9 @@ waiting, while each day's add button assigns expenses to that date.
 
 ## Run locally
 
-Serve the folder with a local web server, then open its HTTP URL in a browser.
-The app loads the Firebase web SDK as ES modules, so opening `index.html`
-through a `file://` URL is not supported.
+Serve the folder with a local web server to use Firebase. If `index.html` is
+opened directly through a `file://` URL, the app automatically switches to
+local-only browser storage instead.
 
 ## Publish with GitHub Pages
 
@@ -24,9 +24,13 @@ through a `file://` URL is not supported.
 
 ## Firebase storage
 
-Groups, expenses, deleted-expense audit records, and settlements are read from
-and written directly to Cloud Firestore. Browser local storage is used only to
-remember the selected **Viewing as** identity for each group.
+On `http://` and `https://`, groups, expenses, deleted-expense audit records,
+and settlements are read from and written directly to Cloud Firestore. Browser
+local storage is used only to remember the selected **Viewing as** identity for
+each group.
+
+On `file://`, Firebase is not loaded and all trip data is stored in that
+browser's local storage.
 
 Anonymous Firebase Authentication identifies the browser installation for
 group access. Public groups are readable and writable by every authenticated
