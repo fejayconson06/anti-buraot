@@ -1061,6 +1061,20 @@ html {
   display: block;
 }
 
+.group-currency-label {
+  margin-top: 16px;
+}
+
+#group-currency {
+  padding: 0 12px;
+  color: var(--ink);
+}
+
+.currency-values > span {
+  display: block;
+  white-space: nowrap;
+}
+
 .group-visibility strong {
   font-size: 10px;
 }

@@ -192,6 +192,7 @@ export async function connectFirebaseStore(onGroupsChanged, onError = console.er
             ? {
               name: metadata.name,
               members: metadata.members,
+              currency: metadata.currency || "PHP",
               visibility: metadata.visibility,
               tripStartDate: metadata.tripStartDate || null,
               tripEndDate: metadata.tripEndDate || null,

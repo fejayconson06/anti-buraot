@@ -241,6 +241,9 @@
 #summary-view .member-summary-values b.positive { color: var(--green); }
 #summary-view .member-summary-values b.negative { color: var(--danger); }
 #summary-view .member-summary-values b.neutral { color: var(--ink); }
+#summary-view .member-summary-values b .positive { color: var(--green); }
+#summary-view .member-summary-values b .negative { color: var(--danger); }
+#summary-view .member-summary-values b .neutral { color: var(--ink); }
 
 #summary-view .summary-side-column {
   min-width: 0;

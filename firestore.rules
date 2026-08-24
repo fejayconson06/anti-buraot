@@ -73,7 +73,7 @@ service cloud.firestore {
           && request.resource.data.ownerUid == resource.data.ownerUid
           && request.resource.data.accessUids == resource.data.accessUids
           && request.resource.data.diff(resource.data).affectedKeys()
-            .hasOnly(['name', 'members', 'visibility', 'tripStartDate', 'tripEndDate', 'testOffset', 'updatedAt'])
+            .hasOnly(['name', 'members', 'currency', 'visibility', 'tripStartDate', 'tripEndDate', 'testOffset', 'updatedAt'])
         );
 
       allow delete: if signedIn()

@@ -50,7 +50,8 @@
   gap: 8px;
 }
 
-.period-meta small {
+.period-meta small,
+.period-meta > span {
   color: var(--muted);
   font-size: 9px;
 }
