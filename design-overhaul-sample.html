@@ -1,0 +1,892 @@
+<!doctype html>
+<html lang="en-PH">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Anti-Buraot visual overhaul prototype">
+  <title>Anti-Buraot Visual Overhaul</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --canvas: #edf1ee;
+      --surface: #f9faf8;
+      --surface-raised: #fbfcfb;
+      --surface-tint: #e4eee8;
+      --ink: #17221c;
+      --muted: #59655e;
+      --line: #cbd4ce;
+      --accent: #176743;
+      --accent-strong: #0e4f32;
+      --accent-ink: #f4faf6;
+      --danger: #a33128;
+      --danger-soft: #f8e5e2;
+      --shadow: 0 18px 45px rgb(31 59 43 / 10%);
+      --radius-surface: 14px;
+      --radius-control: 10px;
+    }
+
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    html { min-height: 100%; background: var(--canvas); }
+    body {
+      min-height: 100dvh;
+      margin: 0;
+      background:
+        linear-gradient(90deg, transparent 0 49.95%, rgb(23 103 67 / 4%) 50%, transparent 50.05%),
+        var(--canvas);
+      color: var(--ink);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, select, input { color: inherit; font: inherit; }
+    button { touch-action: manipulation; }
+    button:disabled { opacity: .45; cursor: not-allowed; }
+    body.modal-open { overflow: hidden; }
+    button:focus-visible, select:focus-visible, input:focus-visible, [tabindex]:focus-visible {
+      outline: 3px solid rgb(23 103 67 / 24%);
+      outline-offset: 2px;
+    }
+    button:active { transform: scale(.98); }
+
+    .app-bar {
+      min-height: 58px;
+      padding: 8px max(20px, calc((100vw - 1180px) / 2));
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+      background: color-mix(in srgb, var(--surface-raised) 94%, transparent);
+    }
+
+    .brand {
+      grid-column: 2;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      border: 0;
+      background: transparent;
+      font-size: 15px;
+      font-weight: 850;
+      letter-spacing: -.03em;
+      cursor: pointer;
+    }
+
+    .brand-mark,
+    .trip-mark,
+    .avatar {
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      background: var(--accent);
+      color: var(--accent-ink);
+      font-weight: 850;
+      letter-spacing: -.04em;
+    }
+
+    .brand-mark { width: 30px; height: 30px; border-radius: 9px; font-size: 11px; }
+    .prototype-label { justify-self: end; color: var(--muted); font-size: 12px; font-weight: 700; }
+
+    .shell {
+      width: min(1180px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 30px 0 68px;
+    }
+
+    .screen { animation: screen-in .22s ease both; }
+
+    .screen-heading {
+      margin-bottom: 18px;
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .screen-heading h1 { margin: 0; font-size: clamp(27px, 4vw, 40px); line-height: 1; letter-spacing: -.055em; }
+    .screen-heading p { max-width: 40ch; margin: 8px 0 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
+
+    .button {
+      min-height: 44px;
+      padding: 0 15px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-control);
+      background: var(--surface-raised);
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .button.primary { border-color: var(--accent); background: var(--accent); color: var(--accent-ink); }
+    .button.ghost { background: transparent; }
+    .button:hover { border-color: var(--accent); }
+    .button.primary:hover { background: var(--accent-strong); }
+
+    .create-button { min-width: 124px; }
+    .create-button b { font-size: 20px; font-weight: 500; line-height: 1; }
+
+    .group-list {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-surface);
+      background: var(--surface-raised);
+      box-shadow: var(--shadow);
+    }
+
+    .group-row {
+      min-height: 108px;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 52px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+    .group-row:last-child { border-bottom: 0; }
+    .group-row.settled { background: color-mix(in srgb, var(--canvas) 72%, var(--surface-raised)); color: var(--muted); }
+    .trip-mark { width: 52px; height: 52px; border-radius: 13px; font-size: 15px; }
+    .settled .trip-mark { background: var(--line); color: var(--muted); }
+    .group-main { min-width: 0; }
+    .group-title-line { display: flex; align-items: center; gap: 10px; }
+    .group-title-line h2 { overflow: hidden; margin: 0; font-size: 18px; letter-spacing: -.025em; text-overflow: ellipsis; white-space: nowrap; }
+
+    .badges { margin-top: 7px; display: flex; flex-wrap: wrap; gap: 6px; }
+    .badge {
+      min-height: 25px;
+      padding: 4px 8px;
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 750;
+    }
+    .badge.active { border-color: color-mix(in srgb, var(--accent) 30%, var(--line)); background: var(--surface-tint); color: var(--accent-strong); }
+
+    .group-members { margin-top: 12px; display: flex; align-items: center; }
+    .avatar { width: 30px; height: 30px; margin-left: -6px; border: 2px solid var(--surface-raised); border-radius: 50%; font-size: 9px; }
+    .avatar:first-child { margin-left: 0; }
+    .avatar:nth-child(2) { background: #315948; }
+    .avatar:nth-child(3) { background: #557163; }
+    .group-meta { min-width: 170px; text-align: right; }
+    .group-meta small { display: block; color: var(--muted); font-size: 12px; font-weight: 650; }
+    .group-meta strong { display: block; margin-top: 4px; font-size: 20px; letter-spacing: -.035em; }
+    .group-actions { margin-top: 10px; display: flex; justify-content: flex-end; gap: 7px; }
+    .group-actions .button { min-height: 44px; padding-inline: 12px; font-size: 12px; }
+
+    .trip-context {
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      border-radius: var(--radius-surface);
+      background: var(--accent-strong);
+      color: var(--accent-ink);
+      box-shadow: var(--shadow);
+    }
+
+    .trip-context-main { padding: 22px 24px; display: flex; align-items: center; gap: 16px; }
+    .trip-context .trip-mark { background: var(--surface-raised); color: var(--accent-strong); }
+    .trip-copy { min-width: 0; }
+    .trip-copy h1 { overflow: hidden; margin: 0; font-size: clamp(22px, 3vw, 30px); letter-spacing: -.045em; text-overflow: ellipsis; white-space: nowrap; }
+    .trip-copy p { margin: 6px 0 0; color: rgb(244 250 246 / 76%); font-size: 13px; }
+    .trip-context-side { min-width: 250px; padding: 18px 22px; display: flex; flex-direction: column; justify-content: center; border-left: 1px solid rgb(244 250 246 / 18%); }
+    .trip-context-side strong { font-size: 14px; }
+    .trip-context-side button { width: max-content; min-height: 44px; margin: 1px 0 0; padding: 0; border: 0; background: transparent; color: rgb(244 250 246 / 72%); font-size: 12px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+
+    .trip-nav {
+      margin: 12px 0 18px;
+      padding: 5px;
+      display: flex;
+      gap: 5px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-surface);
+      background: color-mix(in srgb, var(--surface-raised) 86%, transparent);
+    }
+    .trip-nav button { min-height: 44px; flex: 1; border: 0; border-radius: var(--radius-control); background: transparent; color: var(--muted); font-size: 13px; font-weight: 800; cursor: pointer; }
+    .trip-nav button.active { background: var(--surface-raised); color: var(--accent-strong); box-shadow: 0 4px 15px rgb(31 59 43 / 9%); }
+
+    .summary-grid { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(300px, .75fr); gap: 16px; align-items: start; }
+    .ledger-surface, .side-surface, .day-surface {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-surface);
+      background: var(--surface-raised);
+      box-shadow: var(--shadow);
+    }
+
+    .surface-heading { min-height: 72px; padding: 16px 18px; display: flex; align-items: center; justify-content: space-between; gap: 16px; border-bottom: 1px solid var(--line); }
+    .surface-heading h2 { margin: 0; font-size: 17px; letter-spacing: -.025em; }
+    .surface-heading p { margin: 4px 0 0; color: var(--muted); font-size: 12px; }
+    .grand-total { text-align: right; }
+    .grand-total small { display: block; color: var(--muted); font-size: 11px; font-weight: 700; }
+    .grand-total strong { display: block; margin-top: 3px; font-size: 24px; letter-spacing: -.045em; }
+
+    .member-row {
+      min-height: 92px;
+      padding: 15px 18px;
+      display: grid;
+      grid-template-columns: 42px minmax(120px, 1fr) repeat(3, minmax(94px, auto));
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .member-row:last-child { border-bottom: 0; }
+    .member-row .avatar { width: 42px; height: 42px; margin: 0; border: 0; font-size: 11px; }
+    .member-name strong { display: block; font-size: 14px; }
+    .member-name small { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; }
+    .member-values { display: contents; }
+    .metric { min-width: 0; text-align: right; }
+    .metric span { display: block; color: var(--muted); font-size: 11px; font-weight: 750; text-transform: uppercase; letter-spacing: .055em; }
+    .metric strong { display: block; margin-top: 5px; font-size: 14px; }
+    .metric button { min-height: 44px; margin-top: 0; padding: 0; display: inline-flex; align-items: center; justify-content: flex-end; border: 0; background: transparent; color: var(--accent); font-size: 14px; font-weight: 850; cursor: pointer; }
+    .metric.owes strong, .metric.owes button { color: var(--danger); }
+
+    .side-surface { padding: 18px; }
+    .side-surface + .side-surface { margin-top: 16px; }
+    .side-surface h2 { margin: 0; font-size: 17px; letter-spacing: -.025em; }
+    .side-surface > p { margin: 6px 0 18px; color: var(--muted); font-size: 13px; line-height: 1.45; }
+    .settlement-route { padding: 14px 0; display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center; border-top: 1px solid var(--line); }
+    .settlement-route:first-of-type { border-top: 0; }
+    .settlement-route p { margin: 0; font-size: 13px; font-weight: 750; }
+    .settlement-route small { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; }
+    .settlement-route strong { font-size: 15px; }
+    .settlement-route .button { grid-column: 1 / -1; min-height: 44px; }
+
+    .activity-row { padding: 12px 0; display: flex; align-items: center; justify-content: space-between; gap: 12px; border-top: 1px solid var(--line); font-size: 12px; }
+    .activity-row span { color: var(--muted); }
+
+    .expense-toolbar { margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .date-switcher { display: flex; align-items: center; gap: 8px; }
+    .square-button { width: 44px; height: 44px; padding: 0; border: 1px solid var(--line); border-radius: var(--radius-control); background: var(--surface-raised); font-size: 20px; cursor: pointer; }
+    .date-label { min-width: 175px; text-align: center; }
+    .date-label strong { display: block; font-size: 14px; }
+    .date-label small { display: block; margin-top: 2px; color: var(--muted); font-size: 12px; }
+    .toolbar-actions { display: flex; gap: 8px; }
+
+    .day-heading { padding: 20px; display: grid; grid-template-columns: 58px 1fr auto; gap: 15px; align-items: center; border-bottom: 1px solid var(--line); }
+    .calendar-tile { width: 58px; height: 58px; display: grid; place-items: center; border-radius: 12px; background: var(--surface-tint); color: var(--accent-strong); }
+    .calendar-tile strong { font-size: 24px; letter-spacing: -.04em; }
+    .day-heading h2 { margin: 0; font-size: 20px; letter-spacing: -.035em; }
+    .day-heading p { margin: 4px 0 0; color: var(--muted); font-size: 12px; }
+    .day-total { text-align: right; }
+    .day-total small { display: block; color: var(--muted); font-size: 11px; font-weight: 700; }
+    .day-total strong { display: block; margin-top: 3px; font-size: 21px; letter-spacing: -.035em; }
+
+    .period { display: grid; grid-template-columns: 130px minmax(0, 1fr); border-bottom: 1px solid var(--line); }
+    .period:last-child { border-bottom: 0; }
+    .period-label { padding: 18px; background: color-mix(in srgb, var(--surface-tint) 60%, var(--surface-raised)); }
+    .period-label strong { display: block; font-size: 13px; }
+    .period-label small { display: block; margin-top: 5px; color: var(--muted); font-size: 12px; }
+    .expense-list { padding: 6px 16px; }
+    .expense-row { min-height: 72px; padding: 12px 0; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 16px; }
+    .expense-copy h3 { margin: 0; font-size: 14px; }
+    .expense-copy p { margin: 5px 0 0; color: var(--muted); font-size: 12px; line-height: 1.45; }
+    .expense-value { min-width: 105px; text-align: right; }
+    .expense-value span { display: block; color: var(--muted); font-size: 11px; font-weight: 750; text-transform: uppercase; letter-spacing: .05em; }
+    .expense-value strong { display: block; margin-top: 4px; font-size: 15px; }
+    .expense-value.lent strong { color: var(--accent); }
+    .expense-value.owes strong { color: var(--danger); }
+    .period-add-row { padding: 6px 0 8px; display: flex; justify-content: flex-end; }
+    .period-empty { min-height: 82px; display: flex; align-items: center; justify-content: space-between; gap: 12px; color: var(--muted); font-size: 12px; }
+    .add-inline { width: 44px; min-width: 44px; height: 44px; padding: 0; display: grid; place-items: center; border: 1px dashed var(--accent); border-radius: var(--radius-control); background: transparent; color: var(--accent); font-size: 24px; font-weight: 500; line-height: 1; cursor: pointer; }
+
+    .empty-day-intro {
+      margin: 18px;
+      padding: 16px;
+      display: grid;
+      grid-template-columns: 46px minmax(0, 1fr);
+      align-items: center;
+      gap: 13px;
+      border-radius: 12px;
+      background: var(--surface-tint);
+    }
+    .empty-day-count { width: 46px; height: 46px; display: grid; place-items: center; border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--line)); border-radius: 12px; color: var(--accent); font-size: 20px; font-weight: 850; }
+    .empty-day-intro h3 { margin: 0; font-size: 15px; }
+    .empty-day-intro p { margin: 4px 0 0; color: var(--muted); font-size: 12px; line-height: 1.45; }
+    .empty-day .period { min-height: 104px; }
+    .empty-day .expense-list { display: flex; align-items: center; }
+    .empty-day .period-empty { width: 100%; }
+
+    .mobile-nav { display: none; }
+
+    .modal {
+      position: fixed;
+      z-index: 10;
+      inset: 0;
+      padding: 18px;
+      display: grid;
+      place-items: center;
+      background: rgb(13 24 18 / 55%);
+    }
+    .modal-card { width: min(520px, 100%); max-height: calc(100dvh - 36px); padding: 20px; overflow-y: auto; border: 1px solid var(--line); border-radius: var(--radius-surface); background: var(--surface-raised); box-shadow: 0 25px 70px rgb(13 24 18 / 30%); }
+    .modal-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .modal-heading h2 { margin: 0; font-size: 20px; }
+    .modal-close { width: 44px; height: 44px; padding: 0; border: 1px solid var(--line); border-radius: var(--radius-control); background: transparent; font-size: 21px; cursor: pointer; }
+    .filter-grid { margin-top: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .filter-grid label { display: grid; gap: 7px; color: var(--muted); font-size: 12px; font-weight: 750; }
+    .filter-grid label:first-child { grid-column: 1 / -1; }
+    .filter-grid input, .filter-grid select { width: 100%; min-height: 44px; padding: 0 12px; border: 1px solid var(--line); border-radius: var(--radius-control); background: var(--surface); font-size: 16px; }
+    .modal-actions { margin-top: 20px; display: flex; justify-content: flex-end; gap: 8px; }
+
+    .transaction-modal-card { width: min(640px, 100%); }
+    .transaction-modal-heading { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 10px; }
+    .transaction-modal-heading h2 { margin: 0; font-size: 21px; letter-spacing: -.035em; }
+    .transaction-context { margin: 4px 0 0; color: var(--muted); font-size: 12px; }
+    .receipt-control { position: relative; }
+    .receipt-control input { position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: .001; }
+    .receipt-action { min-height: 44px; padding: 0 13px; display: inline-flex; align-items: center; justify-content: center; border: 1px dashed var(--accent); border-radius: var(--radius-control); color: var(--accent); font-size: 12px; font-weight: 800; white-space: nowrap; cursor: pointer; }
+    .transaction-fields { margin-top: 18px; display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(170px, .55fr); gap: 12px; }
+    .field { min-width: 0; display: grid; gap: 7px; color: var(--muted); font-size: 12px; font-weight: 750; }
+    .field > input, .currency-field { width: 100%; min-height: 44px; border: 1px solid var(--line); border-radius: var(--radius-control); background: var(--surface); }
+    .field > input { padding: 0 12px; font-size: 16px; }
+    .currency-field { display: flex; align-items: center; }
+    .currency-field span { width: 36px; flex: 0 0 36px; color: var(--muted); text-align: center; }
+    .currency-field input { min-width: 0; height: 42px; flex: 1; padding: 0 11px 0 0; border: 0; outline: 0; background: transparent; font-size: 16px; text-align: right; }
+    .transaction-section { margin-top: 18px; }
+    .transaction-section-heading { margin-bottom: 9px; display: flex; align-items: end; justify-content: space-between; gap: 12px; }
+    .transaction-section-heading strong { font-size: 13px; }
+    .transaction-section-heading small { color: var(--muted); font-size: 12px; }
+    .payer-choices { display: flex; flex-wrap: wrap; gap: 9px; }
+    .payer-choice { min-width: 44px; height: 44px; padding: 0 11px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--muted); font-size: 11px; font-weight: 850; cursor: pointer; }
+    .payer-choice.active { border-color: var(--accent); background: var(--surface-tint); color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+    .split-list { max-height: min(220px, 31dvh); display: grid; gap: 7px; overflow-y: auto; overscroll-behavior: contain; }
+    .split-entry { min-height: 48px; padding: 4px; display: grid; grid-template-columns: 38px minmax(0, 1fr) minmax(120px, 150px); align-items: center; gap: 9px; border-radius: var(--radius-control); background: var(--surface); }
+    .split-toggle { width: 38px; height: 38px; padding: 0; border: 1px solid var(--line); border-radius: 50%; background: var(--surface-raised); color: var(--muted); font-size: 10px; font-weight: 850; cursor: pointer; }
+    .split-entry.active .split-toggle { border-color: var(--accent); background: var(--accent); color: var(--accent-ink); }
+    .split-entry strong { min-width: 0; overflow: hidden; font-size: 13px; text-overflow: ellipsis; white-space: nowrap; }
+    .split-entry .currency-field { min-height: 40px; background: var(--surface-raised); }
+    .split-entry .currency-field input { height: 38px; font-size: 15px; }
+    .transaction-error { margin: 14px 0 0; padding: 10px 12px; border-radius: var(--radius-control); background: var(--danger-soft); color: var(--danger); font-size: 12px; font-weight: 750; }
+    .transaction-actions { margin-top: 20px; display: flex; justify-content: flex-end; gap: 8px; }
+    .transaction-actions .button.primary { min-width: 154px; }
+    .draft-action { color: var(--accent); }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --canvas: #111713;
+        --surface: #17201a;
+        --surface-raised: #1c2720;
+        --surface-tint: #21392d;
+        --ink: #eef5f0;
+        --muted: #aebcb3;
+        --line: #34433a;
+        --accent: #57b886;
+        --accent-strong: #173f2c;
+        --accent-ink: #f1faf4;
+        --danger: #ff8d82;
+        --danger-soft: #3d2422;
+        --shadow: 0 18px 45px rgb(0 0 0 / 22%);
+      }
+    }
+
+    @media (max-width: 767px) {
+      body { background: var(--canvas); }
+      .app-bar { min-height: 52px; padding-inline: 14px; }
+      .prototype-label { display: none; }
+      .shell { width: min(100% - 24px, 620px); padding: 18px 0 94px; }
+      .screen-heading { align-items: flex-start; }
+      .screen-heading h1 { font-size: 29px; }
+      .screen-heading p { font-size: 13px; }
+      .create-button { min-width: 48px; width: 48px; padding: 0; font-size: 0; }
+      .create-button b { font-size: 22px; }
+
+      .group-row { min-height: 0; padding: 16px; grid-template-columns: 44px minmax(0, 1fr); gap: 12px; }
+      .group-row .trip-mark { width: 44px; height: 44px; }
+      .group-title-line h2 { font-size: 16px; }
+      .group-meta { grid-column: 1 / -1; min-width: 0; padding-top: 12px; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--line); text-align: left; }
+      .group-meta strong { margin: 0; font-size: 18px; }
+      .group-actions { margin: 0; }
+      .group-actions .button { min-height: 44px; }
+
+      .trip-context { grid-template-columns: 1fr; }
+      .trip-context-main { padding: 17px; gap: 12px; }
+      .trip-context .trip-mark { width: 46px; height: 46px; }
+      .trip-copy h1 { font-size: 21px; }
+      .trip-copy p { font-size: 12px; }
+      .trip-context-side { min-width: 0; padding: 12px 17px; border-top: 1px solid rgb(244 250 246 / 18%); border-left: 0; }
+      .trip-context-side { flex-direction: row; align-items: center; justify-content: space-between; }
+      .trip-context-side button { margin: 0; }
+      .trip-nav { display: none; }
+
+      .summary-grid { grid-template-columns: 1fr; margin-top: 12px; }
+      .surface-heading { min-height: 68px; padding: 14px; }
+      .surface-heading h2 { font-size: 16px; }
+      .grand-total strong { font-size: 20px; }
+      .member-row { padding: 14px; grid-template-columns: 38px minmax(0, 1fr); gap: 9px; }
+      .member-row .avatar { width: 38px; height: 38px; }
+      .member-name { align-self: center; }
+      .member-values { grid-column: 2; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; }
+      .metric { text-align: left; }
+      .metric span { font-size: 10px; }
+      .metric strong, .metric button { font-size: 13px; }
+      .side-surface { padding: 16px; }
+
+      .expense-toolbar { margin: 12px 0; }
+      .date-switcher { width: 100%; justify-content: space-between; }
+      .date-label { min-width: 0; }
+      .toolbar-actions { position: fixed; z-index: 4; right: 18px; bottom: calc(78px + env(safe-area-inset-bottom)); }
+      .toolbar-actions .button:first-child { display: none; }
+      .toolbar-actions .button.primary { width: 52px; height: 52px; min-height: 52px; padding: 0; border-radius: 50%; font-size: 0; box-shadow: var(--shadow); }
+      .toolbar-actions .button.primary::before { content: "+"; font-size: 25px; font-weight: 500; }
+
+      .day-heading { padding: 15px; grid-template-columns: 48px minmax(0, 1fr); gap: 12px; }
+      .calendar-tile { width: 48px; height: 48px; }
+      .calendar-tile strong { font-size: 21px; }
+      .day-heading h2 { font-size: 17px; }
+      .day-total { grid-column: 1 / -1; padding-top: 11px; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--line); text-align: left; }
+      .day-total strong { margin: 0; }
+      .period { grid-template-columns: 1fr; }
+      .period-label { padding: 11px 14px; display: flex; align-items: center; justify-content: space-between; }
+      .period-label small { margin: 0; }
+      .expense-list { padding: 3px 14px; }
+      .expense-row { min-height: 78px; gap: 10px; }
+      .expense-copy p { max-width: 29ch; }
+      .expense-value { min-width: 88px; }
+      .period-empty { min-height: 70px; }
+      .period-empty { padding-block: 12px; align-items: flex-start; flex-direction: column; }
+      .period-empty .add-inline { width: 44px; align-self: flex-end; }
+      .empty-day-intro { margin: 14px; padding: 14px; }
+      .empty-day .period { min-height: 0; }
+      .empty-day .period-empty { min-height: 76px; }
+
+      .mobile-nav {
+        position: fixed;
+        z-index: 5;
+        right: 12px;
+        bottom: calc(10px + env(safe-area-inset-bottom));
+        left: 12px;
+        min-height: 58px;
+        padding: 5px;
+        display: flex;
+        gap: 5px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-surface);
+        background: color-mix(in srgb, var(--surface-raised) 94%, transparent);
+        box-shadow: var(--shadow);
+      }
+      .mobile-nav button { flex: 1; border: 0; border-radius: var(--radius-control); background: transparent; color: var(--muted); font-size: 13px; font-weight: 800; }
+      .mobile-nav button.active { background: var(--accent); color: var(--accent-ink); }
+
+      .modal { align-items: end; padding: 10px; }
+      .modal-card { max-height: calc(100dvh - 20px); padding: 17px; }
+      .filter-grid { grid-template-columns: 1fr; gap: 12px; }
+      .filter-grid label:first-child { grid-column: 1; }
+      .modal-actions .button { flex: 1; }
+      .transaction-modal-card { padding: 16px; }
+      .transaction-modal-heading { grid-template-columns: minmax(0, 1fr) auto; }
+      .transaction-modal-heading .modal-close { grid-column: 2; grid-row: 1; }
+      .receipt-control { grid-column: 1 / -1; }
+      .receipt-action { width: 100%; }
+      .transaction-fields { margin-top: 14px; grid-template-columns: 1fr; gap: 10px; }
+      .transaction-section { margin-top: 14px; }
+      .split-entry { grid-template-columns: 36px minmax(0, 1fr) 112px; gap: 7px; }
+      .split-toggle { width: 36px; height: 36px; }
+      .transaction-actions { display: grid; grid-template-columns: 1fr 1fr; }
+      .transaction-actions .button { width: 100%; padding-inline: 10px; }
+      .transaction-actions .button.primary { grid-column: 1 / -1; grid-row: 1; min-width: 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+
+    @keyframes screen-in {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <header class="app-bar">
+    <button class="brand" type="button" data-view="groups"><span class="brand-mark">AB</span>Anti-Buraot</button>
+    <span class="prototype-label">Visual overhaul prototype</span>
+  </header>
+
+  <main id="main-content" class="shell">
+    <section id="groups-screen" class="screen">
+      <header class="screen-heading">
+        <div><h1>Your trips</h1><p>Open a trip, check what you owe, or start a new group.</p></div>
+        <button class="button primary create-button" type="button"><b aria-hidden="true">+</b><span>New group</span></button>
+      </header>
+
+      <div class="group-list">
+        <article class="group-row">
+          <div class="trip-mark" aria-hidden="true">BW</div>
+          <div class="group-main">
+            <div class="group-title-line"><h2>Baler weekend</h2></div>
+            <div class="badges"><span class="badge active">Ongoing</span><span class="badge">Unsettled</span><span class="badge">Public</span></div>
+            <div class="group-members" aria-label="Meko, Peewee, and Katirin"><span class="avatar">ME</span><span class="avatar">PE</span><span class="avatar">KA</span></div>
+          </div>
+          <div class="group-meta">
+            <div><small>Total spent</small><strong>₱8,426.50</strong></div>
+            <div class="group-actions"><button class="button ghost" type="button">Audit</button><button class="button primary" type="button" data-view="expenses">Open trip</button></div>
+          </div>
+        </article>
+
+        <article class="group-row settled">
+          <div class="trip-mark" aria-hidden="true">TR</div>
+          <div class="group-main">
+            <div class="group-title-line"><h2>Tagaytay reunion</h2></div>
+            <div class="badges"><span class="badge">Ended</span><span class="badge">Settled</span><span class="badge">Private</span></div>
+            <div class="group-members" aria-label="Four members"><span class="avatar">MI</span><span class="avatar">JO</span><span class="avatar">AL</span></div>
+          </div>
+          <div class="group-meta">
+            <div><small>Total spent</small><strong>₱14,930.00</strong></div>
+            <div class="group-actions"><button class="button ghost" type="button">View trip</button></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="trip-screen" class="screen" hidden>
+      <header class="trip-context">
+        <div class="trip-context-main">
+          <div class="trip-mark" aria-hidden="true">BW</div>
+          <div class="trip-copy"><h1>Baler weekend</h1><p>Started Aug 18, 2026 <span aria-hidden="true">·</span> Ongoing and unsettled</p></div>
+        </div>
+        <div class="trip-context-side"><strong>Viewing as Meko</strong><button type="button">Not you?</button></div>
+      </header>
+
+      <nav class="trip-nav" aria-label="Trip view">
+        <button type="button" data-view="groups">Groups</button>
+        <button type="button" data-view="summary">Summary</button>
+        <button class="active" type="button" data-view="expenses">Expenses</button>
+      </nav>
+
+      <section id="summary-view" hidden>
+        <div class="summary-grid">
+          <section class="ledger-surface">
+            <header class="surface-heading">
+              <div><h2>Member summary</h2><p>What each person paid, shared, and still needs to settle.</p></div>
+              <div class="grand-total"><small>Total spent</small><strong>₱8,426.50</strong></div>
+            </header>
+
+            <article class="member-row">
+              <span class="avatar">ME</span>
+              <div class="member-name"><strong>Meko</strong><small>You</small></div>
+              <div class="member-values"><div class="metric"><span>Paid</span><strong>₱4,120.00</strong></div><div class="metric"><span>Share</span><button type="button">₱2,808.84</button></div><div class="metric"><span>Gets back</span><button type="button">₱1,311.16</button></div></div>
+            </article>
+            <article class="member-row">
+              <span class="avatar">PE</span>
+              <div class="member-name"><strong>Peewee</strong><small>Member</small></div>
+              <div class="member-values"><div class="metric"><span>Paid</span><strong>₱2,006.50</strong></div><div class="metric"><span>Share</span><button type="button">₱2,808.83</button></div><div class="metric owes"><span>Owes</span><button type="button">₱802.33</button></div></div>
+            </article>
+            <article class="member-row">
+              <span class="avatar">KA</span>
+              <div class="member-name"><strong>Katirin</strong><small>Member</small></div>
+              <div class="member-values"><div class="metric"><span>Paid</span><strong>₱2,300.00</strong></div><div class="metric"><span>Share</span><button type="button">₱2,808.83</button></div><div class="metric owes"><span>Owes</span><button type="button">₱508.83</button></div></div>
+            </article>
+          </section>
+
+          <aside>
+            <section class="side-surface">
+              <h2>Settlement recommendation</h2>
+              <p>Two payments will settle the group.</p>
+              <div class="settlement-route"><div><p>Peewee pays Meko</p><small>Recommended amount</small></div><strong>₱802.33</strong><button class="button primary" type="button">Settle</button></div>
+              <div class="settlement-route"><div><p>Katirin pays Meko</p><small>Recommended amount</small></div><strong>₱508.83</strong><button class="button primary" type="button">Settle</button></div>
+            </section>
+            <section class="side-surface">
+              <h2>Recent payments</h2>
+              <div class="activity-row"><span>No payments recorded</span></div>
+            </section>
+          </aside>
+        </div>
+      </section>
+
+      <section id="expenses-view">
+        <div class="expense-toolbar">
+          <div class="date-switcher"><button id="previous-day" class="square-button" type="button" aria-label="Previous day">‹</button><div class="date-label"><strong id="active-day-date">Monday, Aug 25</strong><small id="active-day-position">Day 8 of 8</small></div><button id="next-day" class="square-button" type="button" aria-label="Next day" disabled>›</button></div>
+          <div class="toolbar-actions"><button id="open-filter" class="button" type="button">Filter</button><button id="add-transaction" class="button primary" type="button">Add transaction</button></div>
+        </div>
+
+        <article id="populated-day" class="day-surface" hidden>
+          <header class="day-heading">
+            <div class="calendar-tile"><strong>24</strong></div>
+            <div><h2>Sunday in Baler</h2><p>Sunday, Aug 24</p></div>
+            <div class="day-total"><small>Day total</small><strong>₱2,250.00</strong></div>
+          </header>
+
+          <section class="period">
+            <div class="period-label"><strong>Morning</strong><small>₱1,450.00</small></div>
+            <div class="expense-list">
+              <article class="expense-row"><div class="expense-copy"><h3>Breakfast</h3><p>Meko paid ₱1,000.00. Peewee ₱333.34, Meko ₱333.33, Katirin ₱333.33</p></div><div class="expense-value lent"><span>Lent</span><strong>₱666.67</strong></div></article>
+              <article class="expense-row"><div class="expense-copy"><h3>Parking</h3><p>Peewee paid ₱450.00. Split equally between three members</p></div><div class="expense-value owes"><span>Owes</span><strong>₱150.00</strong></div></article>
+              <div class="period-add-row"><button class="add-inline" type="button" data-period="morning" aria-label="Add morning transaction">+</button></div>
+            </div>
+          </section>
+
+          <section class="period">
+            <div class="period-label"><strong>Afternoon</strong><small>₱800.00</small></div>
+            <div class="expense-list"><article class="expense-row"><div class="expense-copy"><h3>Fuel</h3><p>Katirin paid ₱800.00. Split equally between three members</p></div><div class="expense-value owes"><span>Owes</span><strong>₱266.67</strong></div></article><div class="period-add-row"><button class="add-inline" type="button" data-period="afternoon" aria-label="Add afternoon transaction">+</button></div></div>
+          </section>
+
+          <section class="period">
+            <div class="period-label"><strong>Evening</strong><small>No expenses</small></div>
+            <div class="expense-list"><div class="period-empty"><span>Nothing recorded yet.</span><button class="add-inline" type="button" data-period="evening" aria-label="Add evening transaction">+</button></div></div>
+          </section>
+        </article>
+
+        <article id="empty-day" class="day-surface empty-day">
+          <header class="day-heading">
+            <div class="calendar-tile"><strong>25</strong></div>
+            <div><h2>Monday in Baler</h2><p>Automatically generated day</p></div>
+            <div class="day-total"><small>Day total</small><strong>₱0.00</strong></div>
+          </header>
+
+          <div class="empty-day-intro">
+            <div class="empty-day-count" aria-hidden="true">0</div>
+            <div><h3>No expenses recorded</h3><p>This day is ready for its first entry. Add an expense to the appropriate time period.</p></div>
+          </div>
+
+          <section class="period">
+            <div class="period-label"><strong>Morning</strong><small>No expenses</small></div>
+            <div class="expense-list"><div class="period-empty"><span>Nothing recorded this morning.</span><button class="add-inline" type="button" data-period="morning" aria-label="Add morning transaction">+</button></div></div>
+          </section>
+          <section class="period">
+            <div class="period-label"><strong>Afternoon</strong><small>No expenses</small></div>
+            <div class="expense-list"><div class="period-empty"><span>Nothing recorded this afternoon.</span><button class="add-inline" type="button" data-period="afternoon" aria-label="Add afternoon transaction">+</button></div></div>
+          </section>
+          <section class="period">
+            <div class="period-label"><strong>Evening</strong><small>No expenses</small></div>
+            <div class="expense-list"><div class="period-empty"><span>Nothing recorded this evening.</span><button class="add-inline" type="button" data-period="evening" aria-label="Add evening transaction">+</button></div></div>
+          </section>
+        </article>
+      </section>
+    </section>
+  </main>
+
+  <nav id="mobile-nav" class="mobile-nav" aria-label="Trip view" hidden>
+    <button type="button" data-view="groups">Groups</button>
+    <button type="button" data-view="summary">Summary</button>
+    <button class="active" type="button" data-view="expenses">Expenses</button>
+  </nav>
+
+  <div id="transaction-modal" class="modal" hidden>
+    <form id="transaction-form" class="modal-card transaction-modal-card" role="dialog" aria-modal="true" aria-labelledby="transaction-title" novalidate>
+      <div class="transaction-modal-heading">
+        <div><h2 id="transaction-title">Add transaction</h2><p id="transaction-context" class="transaction-context">Monday, Aug 25 - Morning</p></div>
+        <div class="receipt-control"><button id="receipt-action" class="receipt-action" type="button">Add receipt</button><input id="transaction-receipt" type="file" accept="image/*" capture="environment" tabindex="-1"></div>
+        <button id="close-transaction" class="modal-close" type="button" aria-label="Close transaction form">×</button>
+      </div>
+
+      <div class="transaction-fields">
+        <label class="field">Description<input id="transaction-description" type="text" maxlength="70" autocomplete="off" placeholder="e.g. Breakfast"></label>
+        <label class="field">Amount<div class="currency-field"><span>₱</span><input id="transaction-amount" type="text" inputmode="decimal" autocomplete="off" placeholder="0.00"></div></label>
+      </div>
+
+      <section class="transaction-section" aria-labelledby="payer-heading">
+        <div class="transaction-section-heading"><strong id="payer-heading">Paid by</strong><small>Select one member</small></div>
+        <div class="payer-choices" role="group" aria-label="Paid by">
+          <button class="payer-choice active" type="button" data-payer="Meko" aria-pressed="true">ME</button>
+          <button class="payer-choice" type="button" data-payer="Peewee" aria-pressed="false">PE</button>
+          <button class="payer-choice" type="button" data-payer="Katirin" aria-pressed="false">KA</button>
+        </div>
+      </section>
+
+      <section class="transaction-section" aria-labelledby="split-heading">
+        <div class="transaction-section-heading"><strong id="split-heading">Split between</strong><small id="split-preview">Enter an amount to calculate the split</small></div>
+        <div class="split-list">
+          <div class="split-entry active" data-split-entry><button class="split-toggle" type="button" aria-label="Include Meko" aria-pressed="true">ME</button><strong>Meko</strong><div class="currency-field"><span>₱</span><input type="text" inputmode="decimal" data-split-amount aria-label="Meko share" autocomplete="off"></div></div>
+          <div class="split-entry active" data-split-entry><button class="split-toggle" type="button" aria-label="Include Peewee" aria-pressed="true">PE</button><strong>Peewee</strong><div class="currency-field"><span>₱</span><input type="text" inputmode="decimal" data-split-amount aria-label="Peewee share" autocomplete="off"></div></div>
+          <div class="split-entry active" data-split-entry><button class="split-toggle" type="button" aria-label="Include Katirin" aria-pressed="true">KA</button><strong>Katirin</strong><div class="currency-field"><span>₱</span><input type="text" inputmode="decimal" data-split-amount aria-label="Katirin share" autocomplete="off"></div></div>
+        </div>
+      </section>
+
+      <p id="transaction-error" class="transaction-error" role="alert" hidden></p>
+      <div class="transaction-actions"><button id="cancel-transaction" class="button ghost" type="button">Cancel</button><button id="save-draft" class="button ghost draft-action" type="button">Save draft</button><button class="button primary" type="submit">Save transaction</button></div>
+    </form>
+  </div>
+
+  <div id="filter-modal" class="modal" hidden>
+    <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="filter-title">
+      <div class="modal-heading"><h2 id="filter-title">Filter expenses</h2><button id="close-filter" class="modal-close" type="button" aria-label="Close filters">×</button></div>
+      <div class="filter-grid">
+        <label>Description<input type="search" placeholder="Search expenses"></label>
+        <label>Paid by<select><option>All members</option><option>Meko</option><option>Peewee</option><option>Katirin</option></select></label>
+        <label>Status<select><option>All statuses</option><option>Recorded</option><option>Draft</option></select></label>
+        <label>Receipt<select><option>With or without receipt</option><option>With receipt</option><option>Without receipt</option></select></label>
+        <label>Minimum amount<input type="text" inputmode="decimal" placeholder="₱0.00"></label>
+      </div>
+      <div class="modal-actions"><button id="clear-filter" class="button ghost" type="button">Clear all</button><button id="apply-filter" class="button primary" type="button">Apply filters</button></div>
+    </section>
+  </div>
+
+  <script>
+    const groupsScreen = document.querySelector("#groups-screen");
+    const tripScreen = document.querySelector("#trip-screen");
+    const summaryView = document.querySelector("#summary-view");
+    const expensesView = document.querySelector("#expenses-view");
+    const mobileNav = document.querySelector("#mobile-nav");
+    const main = document.querySelector("#main-content");
+    const filterModal = document.querySelector("#filter-modal");
+    const transactionModal = document.querySelector("#transaction-modal");
+    const transactionForm = document.querySelector("#transaction-form");
+    const transactionDescription = document.querySelector("#transaction-description");
+    const transactionAmount = document.querySelector("#transaction-amount");
+    const transactionContext = document.querySelector("#transaction-context");
+    const transactionReceipt = document.querySelector("#transaction-receipt");
+    const receiptAction = document.querySelector("#receipt-action");
+    const splitPreview = document.querySelector("#split-preview");
+    const transactionError = document.querySelector("#transaction-error");
+    const populatedDay = document.querySelector("#populated-day");
+    const emptyDay = document.querySelector("#empty-day");
+    const previousDay = document.querySelector("#previous-day");
+    const nextDay = document.querySelector("#next-day");
+    const activeDayDate = document.querySelector("#active-day-date");
+    const activeDayPosition = document.querySelector("#active-day-position");
+    let previousFocus = null;
+    let activeModal = null;
+
+    function showView(view) {
+      const groups = view === "groups";
+      groupsScreen.hidden = !groups;
+      tripScreen.hidden = groups;
+      summaryView.hidden = groups || view !== "summary";
+      expensesView.hidden = groups || view !== "expenses";
+      mobileNav.hidden = groups;
+      document.querySelectorAll("[data-view]").forEach(button => {
+        const active = button.dataset.view === view;
+        button.classList.toggle("active", active);
+        if (button.closest("nav")) button.setAttribute("aria-current", active ? "page" : "false");
+      });
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+    }
+
+    function openModal(modal, focusTarget) {
+      previousFocus = document.activeElement;
+      activeModal = modal;
+      modal.hidden = false;
+      main.inert = true;
+      mobileNav.inert = true;
+      document.body.classList.add("modal-open");
+      modal.querySelector(focusTarget)?.focus();
+    }
+
+    function closeModal(modal) {
+      modal.hidden = true;
+      main.inert = false;
+      mobileNav.inert = false;
+      document.body.classList.remove("modal-open");
+      activeModal = null;
+      previousFocus?.focus();
+    }
+
+    function openFilter() { openModal(filterModal, "#close-filter"); }
+    function closeFilter() { closeModal(filterModal); }
+
+    function resetTransactionForm() {
+      transactionForm.reset();
+      receiptAction.textContent = "Add receipt";
+      receiptAction.disabled = false;
+      transactionError.hidden = true;
+      transactionError.textContent = "";
+      document.querySelectorAll(".payer-choice").forEach((button, index) => {
+        button.classList.toggle("active", index === 0);
+        button.setAttribute("aria-pressed", String(index === 0));
+      });
+      document.querySelectorAll("[data-split-entry]").forEach(entry => {
+        entry.classList.add("active");
+        entry.querySelector(".split-toggle").setAttribute("aria-pressed", "true");
+        entry.querySelector("[data-split-amount]").disabled = false;
+      });
+      splitPreview.textContent = "Enter an amount to calculate the split";
+    }
+
+    function openTransaction(period = "morning") {
+      resetTransactionForm();
+      const date = emptyDay.hidden ? "Sunday, Aug 24" : "Monday, Aug 25";
+      transactionContext.textContent = `${date} - ${period.charAt(0).toUpperCase()}${period.slice(1)}`;
+      openModal(transactionModal, "#close-transaction");
+    }
+
+    function closeTransaction() { closeModal(transactionModal); }
+
+    function updateSampleSplit() {
+      const amount = Number(transactionAmount.value.replace(/[,₱\s]/g, ""));
+      const activeEntries = [...document.querySelectorAll("[data-split-entry].active")];
+      document.querySelectorAll("[data-split-entry]:not(.active) [data-split-amount]").forEach(input => input.value = "");
+      if (!Number.isFinite(amount) || amount <= 0 || !activeEntries.length) {
+        activeEntries.forEach(entry => entry.querySelector("[data-split-amount]").value = "");
+        splitPreview.textContent = "Enter an amount to calculate the split";
+        return;
+      }
+      const cents = Math.round(amount * 100);
+      const base = Math.floor(cents / activeEntries.length);
+      const remainder = cents - base * activeEntries.length;
+      activeEntries.forEach((entry, index) => entry.querySelector("[data-split-amount]").value = ((base + (index < remainder ? 1 : 0)) / 100).toFixed(2));
+      splitPreview.textContent = `Split equally between ${activeEntries.length} ${activeEntries.length === 1 ? "member" : "members"}`;
+    }
+
+    function showEmptyDay(showEmpty) {
+      populatedDay.hidden = showEmpty;
+      emptyDay.hidden = !showEmpty;
+      activeDayDate.textContent = showEmpty ? "Monday, Aug 25" : "Sunday, Aug 24";
+      activeDayPosition.textContent = showEmpty ? "Day 8 of 8" : "Day 7 of 8";
+      previousDay.disabled = !showEmpty;
+      nextDay.disabled = showEmpty;
+    }
+
+    document.querySelectorAll("[data-view]").forEach(button => button.addEventListener("click", () => showView(button.dataset.view)));
+    document.querySelector("#add-transaction").addEventListener("click", () => openTransaction("morning"));
+    document.querySelectorAll("[data-period]").forEach(button => button.addEventListener("click", () => openTransaction(button.dataset.period)));
+    document.querySelector("#open-filter").addEventListener("click", openFilter);
+    document.querySelector("#close-filter").addEventListener("click", closeFilter);
+    document.querySelector("#clear-filter").addEventListener("click", closeFilter);
+    document.querySelector("#apply-filter").addEventListener("click", closeFilter);
+    document.querySelector("#close-transaction").addEventListener("click", closeTransaction);
+    document.querySelector("#cancel-transaction").addEventListener("click", closeTransaction);
+    document.querySelector("#save-draft").addEventListener("click", closeTransaction);
+    transactionForm.addEventListener("submit", event => {
+      event.preventDefault();
+      const amount = Number(transactionAmount.value.replace(/[,₱\s]/g, ""));
+      if (!transactionDescription.value.trim() || !Number.isFinite(amount) || amount <= 0) {
+        transactionError.textContent = "Enter a description and an amount greater than zero.";
+        transactionError.hidden = false;
+        return;
+      }
+      closeTransaction();
+    });
+    transactionAmount.addEventListener("input", updateSampleSplit);
+    receiptAction.addEventListener("click", () => transactionReceipt.click());
+    transactionReceipt.addEventListener("change", () => { if (transactionReceipt.files?.length) { receiptAction.textContent = "Receipt added"; receiptAction.disabled = true; } });
+    document.querySelectorAll(".payer-choice").forEach(button => button.addEventListener("click", () => {
+      document.querySelectorAll(".payer-choice").forEach(choice => { choice.classList.toggle("active", choice === button); choice.setAttribute("aria-pressed", String(choice === button)); });
+    }));
+    document.querySelectorAll(".split-toggle").forEach(button => button.addEventListener("click", () => {
+      const entry = button.closest("[data-split-entry]");
+      const activeCount = document.querySelectorAll("[data-split-entry].active").length;
+      if (entry.classList.contains("active") && activeCount === 1) return;
+      entry.classList.toggle("active");
+      const active = entry.classList.contains("active");
+      button.setAttribute("aria-pressed", String(active));
+      entry.querySelector("[data-split-amount]").disabled = !active;
+      updateSampleSplit();
+    }));
+    previousDay.addEventListener("click", () => showEmptyDay(false));
+    nextDay.addEventListener("click", () => showEmptyDay(true));
+    filterModal.addEventListener("click", event => { if (event.target === filterModal) closeFilter(); });
+    transactionModal.addEventListener("click", event => { if (event.target === transactionModal) closeTransaction(); });
+    document.addEventListener("keydown", event => {
+      if (!activeModal) return;
+      if (event.key === "Escape") return activeModal === filterModal ? closeFilter() : closeTransaction();
+      if (event.key !== "Tab") return;
+      const focusable = [...activeModal.querySelectorAll("button:not([disabled]), input:not([disabled]):not([tabindex='-1']), select:not([disabled])")];
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    });
+    showEmptyDay(true);
+    showView("expenses");
+  </script>
+</body>
+</html>

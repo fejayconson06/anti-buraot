@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=5"><link rel="stylesheet" href="modal.css?v=7"><link rel="stylesheet" href="timeline.css?v=1"><link rel="stylesheet" href="carousel.css?v=15"><link rel="stylesheet" href="periods.css?v=44"><link rel="stylesheet" href="typography.css?v=1"><link rel="stylesheet" href="layout.css?v=1"><link rel="stylesheet" href="controls.css?v=23"><link rel="stylesheet" href="refinements.css?v=75"><link rel="stylesheet" href="desktop-typography.css?v=2">
+  <link rel="stylesheet" href="style.css?v=5"><link rel="stylesheet" href="modal.css?v=7"><link rel="stylesheet" href="timeline.css?v=1"><link rel="stylesheet" href="carousel.css?v=17"><link rel="stylesheet" href="periods.css?v=56"><link rel="stylesheet" href="typography.css?v=1"><link rel="stylesheet" href="layout.css?v=1"><link rel="stylesheet" href="controls.css?v=24"><link rel="stylesheet" href="refinements.css?v=75"><link rel="stylesheet" href="desktop-typography.css?v=3"><link rel="stylesheet" href="summary-overhaul.css?v=1"><link rel="stylesheet" href="transaction-overhaul.css?v=5">
 </head>
 <body>
   <header class="site-header"><button class="brand" id="home-button" type="button"><span>AB</span>Anti-Buraot</button></header>
@@ -36,7 +36,20 @@
         <div class="group-header-main"><div class="group-identity"><span class="step" id="trip-day-label">TRIP</span></div><div class="group-header-controls"><button id="filter-expenses" class="header-filter-button" type="button" aria-haspopup="dialog" aria-controls="filter-modal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg><span>Filter</span><b id="filter-count" hidden></b></button><button id="back-to-groups" class="quiet-button" type="button">← Groups</button></div></div>
       </header>
       <nav class="trip-view-tabs" aria-label="Trip view"><button type="button" data-trip-view="summary">Summary</button><button class="active" type="button" data-trip-view="expenses">Expenses</button></nav>
-      <div id="summary-view" class="header-summary" hidden><div class="summary-bar"><div id="summary-icon" class="group-card-icon summary-icon" aria-hidden="true">A</div><div class="summary-total"><small>Trip summary</small><strong id="total-spend">₱0.00</strong><span id="expense-count">No expenses yet</span></div></div><section class="spending-summary-card"><small id="spending-summary-label">Spending per person</small><div id="spending-breakdown" class="spending-breakdown"></div></section><section class="panel balance-summary"><div id="balance-list" class="balance-list"></div></section><section class="settlement-summary-card"><small>Settlement recommendation</small><div id="settlement-list"></div><div id="settlement-history" class="settlement-history"></div></section></div>
+      <div id="summary-view" class="header-summary" hidden>
+        <section class="summary-ledger-card" aria-label="Trip summary">
+          <header class="summary-ledger-heading">
+            <div class="summary-ledger-title"><div id="summary-icon" class="group-card-icon summary-icon" aria-hidden="true">A</div></div>
+            <div class="summary-total"><small>Total spent</small><strong id="total-spend">₱0.00</strong><span id="expense-count" hidden>No expenses yet</span></div>
+          </header>
+          <section class="spending-summary-card"><small id="spending-summary-label" hidden>Spending per person</small><div id="spending-breakdown" class="spending-breakdown"></div></section>
+        </section>
+        <aside class="summary-side-column">
+          <section class="settlement-summary-card"><h2>Settlement recommendation</h2><p id="settlement-summary-copy">Suggested payments to settle the group.</p><div id="settlement-list"></div></section>
+          <section class="settlement-history-card"><h2>Recent payments</h2><div id="settlement-history" class="settlement-history"></div></section>
+        </aside>
+        <section class="panel balance-summary" hidden><div id="balance-list" class="balance-list"></div></section>
+      </div>
       <div id="expenses-view" class="trip-grid">
         <section><span id="day-position" hidden></span><div id="day-dots" class="day-dots" aria-hidden="true"></div><div class="day-carousel"><button id="previous-day" class="carousel-button" type="button" aria-label="Previous day">‹</button><div class="day-viewport"><div id="timeline-list" class="timeline-track"></div></div><button id="next-day" class="carousel-button" type="button" aria-label="Next day">›</button></div><button id="end-trip-button" class="end-trip-button" type="button" hidden>End trip</button></section>
       </div>
@@ -45,18 +58,17 @@
   </main>
 
   <div id="expense-modal" class="modal" hidden>
-    <button id="modal-backdrop" class="modal-backdrop" type="button" aria-label="Close expense form"></button>
-    <form id="expense-form" class="expense-form modal-card" role="dialog" aria-modal="true" aria-labelledby="expense-title" novalidate>
-      <div class="section-title"><div><span class="step" id="expense-date-label">EXPENSE</span><h2 id="expense-title">Add an expense</h2></div><div class="receipt-header-control"><div id="receipt-preview" class="receipt-preview" hidden><button id="open-receipt" class="receipt-open-button" type="button" aria-label="View receipt full screen"><img id="receipt-image" alt="Receipt preview"><span>View larger</span></button><button id="remove-receipt" class="receipt-remove-button" type="button" aria-label="Remove receipt">×</button></div><label id="receipt-capture" class="receipt-capture-button" for="receipt-input">Add receipt</label><input id="receipt-input" type="file" accept="image/*" capture="environment"><small id="receipt-status" role="status">Use the camera or choose an image.</small></div></div>
+    <button id="modal-backdrop" class="modal-backdrop" type="button" aria-label="Close transaction form"></button>
+    <form id="expense-form" class="expense-form modal-card transaction-modal-card" role="dialog" aria-modal="true" aria-labelledby="expense-title" novalidate>
+      <div class="transaction-modal-heading"><div class="transaction-modal-copy"><h2 id="expense-title">Add transaction</h2><p id="expense-date-label" class="transaction-context">Expense</p></div><div class="receipt-header-control"><div id="receipt-preview" class="receipt-preview" hidden><button id="open-receipt" class="receipt-open-button" type="button" aria-label="View receipt full screen"><img id="receipt-image" alt="Receipt preview"><span>View larger</span></button><button id="remove-receipt" class="receipt-remove-button" type="button" aria-label="Remove receipt">×</button></div><label id="receipt-capture" class="receipt-capture-button" for="receipt-input">Add receipt</label><input id="receipt-input" type="file" accept="image/*" capture="environment"><small id="receipt-status" role="status">Use the camera or choose an image.</small></div></div>
       <div class="expense-fields"><div><label for="expense-description">Description</label><input id="expense-description" class="input" maxlength="70" placeholder="e.g. Dinner" autocomplete="off"></div><div><label for="expense-amount">Amount</label><div class="money-input"><span>₱</span><input id="expense-amount" type="text" inputmode="decimal" autocomplete="off"></div></div></div>
-      <div class="payer-section"><label>Paid by</label><div id="payer-list" class="payer-list" role="radiogroup" aria-label="Paid by"></div><input id="expense-payer" type="hidden"></div>
-      <div class="split-header"><label>Split between</label><small id="split-preview"></small></div>
-      <div id="split-list" class="unified-split-list"></div>
+      <section class="payer-section transaction-section" aria-labelledby="payer-heading"><div class="transaction-section-heading"><strong id="payer-heading">Paid by</strong><small id="payer-preview">One payer</small></div><div id="payer-allocation-list" class="payer-allocation-list" role="group" aria-label="Paid by"></div><input id="expense-payer" type="hidden"></section>
+      <section class="split-section transaction-section" aria-labelledby="split-heading"><div class="split-header transaction-section-heading"><strong id="split-heading">Split between</strong><small id="split-preview"></small></div><div id="split-list" class="unified-split-list"></div></section>
       <section id="transaction-history" class="transaction-history" aria-labelledby="transaction-history-title" hidden>
         <h3 id="transaction-history-title">Transaction history</h3>
         <div id="transaction-history-list" class="transaction-history-list"></div>
       </section>
-      <p id="expense-error" class="error" role="alert" hidden></p><div class="form-actions"><button id="cancel-expense" class="secondary-button" type="button">Cancel</button><button id="save-draft-button" class="draft-button" type="button">Save draft</button><button id="save-expense-button" class="primary-button compact" type="submit">Save expense <span>→</span></button></div>
+      <p id="expense-error" class="error" role="alert" hidden></p><div class="form-actions transaction-actions"><button id="cancel-expense" class="secondary-button" type="button">Cancel</button><button id="save-draft-button" class="draft-button" type="button">Save draft</button><button id="save-expense-button" class="primary-button compact" type="submit">Save transaction <span>→</span></button></div>
     </form>
   </div>
   <div id="receipt-viewer" class="receipt-viewer" hidden>
@@ -127,6 +139,6 @@
       <div class="confirm-actions"><button id="cancel-settlement" class="secondary-button" type="button">Cancel</button><button class="primary-button compact" type="submit">Record payment</button></div>
     </form>
   </div>
-  <script src="app.js?v=105"></script>
+  <script src="app.js?v=111"></script>
 </body>
 </html>

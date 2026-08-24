@@ -8,30 +8,49 @@
 }
 
 .day-period {
+  --period-icon-column: 49px;
+  --period-icon-background: #f1f3f2;
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  column-gap: 9px;
+  align-items: stretch;
   padding: 8px 12px 10px;
   border-top: 1px solid #bcc6bf;
-  background: var(--white);
+  background: linear-gradient(to right, var(--period-icon-background) 0 var(--period-icon-column), var(--white) var(--period-icon-column));
 }
+
+.day-period:nth-child(2) { --period-icon-background: #fff9e8; }
+.day-period:nth-child(3) { --period-icon-background: #f0f2fb; }
 
 .day-period:has(.period-expenses:empty) {
   min-height: 110px;
   padding-top: 12px;
   padding-bottom: 14px;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
 }
 
-.day-period:nth-child(2) { background: #fff9e8; }
-.day-period:nth-child(3) { background: #f0f2fb; }
-
 .period-marker {
+  min-height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.period-content {
+  min-width: 0;
+  min-height: 100%;
+  padding-left: 9px;
+  display: flex;
+  flex-direction: column;
+}
+
+.period-meta {
   min-height: 24px;
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.period-marker small {
+.period-meta small {
   color: var(--muted);
   font-size: 9px;
 }
@@ -58,8 +77,9 @@
 }
 
 .period-expenses:not(:empty) {
+  margin-top: 3px;
   margin-right: 4px;
-  margin-left: 8px;
+  margin-left: 0;
 }
 
 .period-expenses .expense-item {
@@ -78,7 +98,8 @@
 
 .period-expenses .expense-item:hover,
 .period-expenses .expense-item:focus-visible {
-  background: rgba(255, 255, 255, .55);
+  border-radius: 6px;
+  background: #edf5f0;
   outline: none;
 }
 
@@ -303,25 +324,35 @@ button.audit-label:focus-visible {
 }
 
 .period-add-button {
-  width: 90%;
-  height: 28px;
-  margin: 8px auto 0;
+  width: 34px;
+  height: 34px;
+  margin: 8px 0 0 auto;
+  align-self: end;
+  justify-self: end;
   display: grid;
   place-items: center;
-  border: 1px dashed #a9c8b6;
-  border-radius: 6px;
-  background: var(--green-soft);
-  color: var(--green);
-  font-size: 18px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--green);
+  color: var(--white);
+  box-shadow: 0 3px 8px rgba(22, 107, 70, .2);
+  font-size: 20px;
+  line-height: 1;
   cursor: pointer;
+  transition: transform .16s ease, background .16s ease, box-shadow .16s ease;
 }
 
 .period-add-button:hover,
 .period-add-button:focus-visible {
-  border-style: solid;
-  background: var(--green);
-  color: var(--white);
+  background: #125d3d;
+  box-shadow: 0 5px 12px rgba(22, 107, 70, .25);
+  transform: translateY(-1px);
   outline: none;
+}
+
+.day-period:has(.period-expenses:empty) .period-add-button {
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 .end-trip-button {
@@ -356,7 +387,7 @@ button.audit-label:focus-visible {
 @media (max-width: 540px) {
   .timeline-track .day-header { grid-template-columns: 42px 1fr; }
   .timeline-track .day-total { display: none; }
-  .day-period { padding: 7px 9px 9px; }
+  .day-period { --period-icon-column: 46px; padding: 7px 9px 9px; }
   .day-period:has(.period-expenses:empty) { min-height: 104px; padding-top: 11px; padding-bottom: 13px; }
   .day-periods { grid-template-rows: repeat(3, minmax(92px, auto)); }
   .period-expenses .expense-item { grid-template-columns: 30px minmax(0, 1fr) auto; }
@@ -367,5 +398,5 @@ button.audit-label:focus-visible {
   .mobile-expense-details { display: block; }
   .expense-viewer-meta { display: none; }
   .viewer-expense-amount { display: block; }
-  .period-add-button { width: 94%; height: 27px; }
+  .period-add-button { width: 34px; height: 34px; }
 }
