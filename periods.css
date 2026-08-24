@@ -355,35 +355,6 @@ button.audit-label:focus-visible {
   margin-bottom: auto;
 }
 
-.end-trip-button {
-  width: calc(100% - 92px);
-  height: 32px;
-  margin: 0 auto 8px;
-  display: grid;
-  place-items: center;
-  border: 1px dashed #d7a49d;
-  border-radius: 7px;
-  background: #fff0ed;
-  color: var(--danger);
-  font-size: 10px;
-  font-weight: 800;
-  cursor: pointer;
-}
-
-.end-trip-button:hover,
-.end-trip-button:focus-visible {
-  border-style: solid;
-  background: var(--danger);
-  color: var(--white);
-  outline: none;
-}
-
-@media (max-width: 540px) {
-  .end-trip-button {
-    width: calc(100% - 20px);
-  }
-}
-
 @media (max-width: 540px) {
   .timeline-track .day-header { grid-template-columns: 42px 1fr; }
   .timeline-track .day-total { display: none; }

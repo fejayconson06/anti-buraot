@@ -305,6 +305,7 @@ html {
 
 .edit-group-button,
 .audit-group-button,
+.end-group-button,
 .delete-group-button {
   width: 25px;
   height: 25px;
@@ -335,6 +336,17 @@ html {
 .audit-group-button:focus-visible {
   background: #fff0ed;
   color: var(--danger);
+  outline: none;
+}
+
+.end-group-button {
+  color: #a66a17;
+}
+
+.end-group-button:hover,
+.end-group-button:focus-visible {
+  background: #fff5df;
+  color: #8a5510;
   outline: none;
 }
 
