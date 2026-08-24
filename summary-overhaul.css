@@ -255,8 +255,51 @@
   padding: 16px;
 }
 
+#summary-view .settlement-heading-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+#summary-view #settlement-conversion-button {
+  min-height: 30px;
+  padding: 0 9px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--white);
+  color: var(--green);
+  font-size: 9px;
+  font-weight: 800;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+#summary-view #settlement-conversion-button.active {
+  border-color: #a9c8b6;
+  background: var(--green-soft);
+}
+
+#summary-view #settlement-conversion-button:hover,
+#summary-view #settlement-conversion-button:focus-visible {
+  border-color: var(--green);
+  outline: 0;
+}
+
 #summary-view #settlement-list {
   margin-top: 12px;
+}
+
+#summary-view .conversion-needed {
+  width: 100%;
+  min-height: 42px;
+  border: 1px dashed #d29b87;
+  border-radius: 9px;
+  background: #fff8f4;
+  color: #9b3a24;
+  font-size: 10px;
+  font-weight: 800;
+  cursor: pointer;
 }
 
 #summary-view .settlement-summary-card .settlement {
