@@ -5,7 +5,9 @@ expenses, choose who paid, split equally, by exact amounts, or by percentage,
 edit existing expense cards, and see balances and suggested settlements
 automatically.
 
-Groups appear in a saved groups list. Starting a trip creates one expense panel
+Groups appear in a saved groups list. Before starting, a group has a pre-trip
+panel for hotels, fares, tickets, and other bookings. These expenses remain in
+the ledger after the trip starts. Starting a trip creates one daily expense panel
 per calendar day. A testing control can simulate additional days without
 waiting, while each day's add button assigns expenses to that date.
 
