@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=5"><link rel="stylesheet" href="modal.css?v=7"><link rel="stylesheet" href="timeline.css?v=1"><link rel="stylesheet" href="carousel.css?v=17"><link rel="stylesheet" href="periods.css?v=58"><link rel="stylesheet" href="typography.css?v=1"><link rel="stylesheet" href="layout.css?v=1"><link rel="stylesheet" href="controls.css?v=24"><link rel="stylesheet" href="refinements.css?v=79"><link rel="stylesheet" href="desktop-typography.css?v=4"><link rel="stylesheet" href="summary-overhaul.css?v=3"><link rel="stylesheet" href="transaction-overhaul.css?v=6"><link rel="stylesheet" href="pretrip.css?v=1">
+  <link rel="stylesheet" href="style.css?v=5"><link rel="stylesheet" href="modal.css?v=7"><link rel="stylesheet" href="timeline.css?v=1"><link rel="stylesheet" href="carousel.css?v=17"><link rel="stylesheet" href="periods.css?v=58"><link rel="stylesheet" href="typography.css?v=1"><link rel="stylesheet" href="layout.css?v=1"><link rel="stylesheet" href="controls.css?v=24"><link rel="stylesheet" href="refinements.css?v=81"><link rel="stylesheet" href="desktop-typography.css?v=4"><link rel="stylesheet" href="summary-overhaul.css?v=3"><link rel="stylesheet" href="transaction-overhaul.css?v=6"><link rel="stylesheet" href="pretrip.css?v=1"><link rel="stylesheet" href="group-invites.css?v=4">
 </head>
 <body>
   <header class="site-header"><button class="brand" id="home-button" type="button"><span>AB</span>Anti-Buraot</button></header>
@@ -24,7 +24,7 @@
         <div class="form-intro"><span class="step">NEW GROUP</span><h1 hidden>Edit group</h1><p hidden>Update the group name or its members.</p></div>
         <label for="group-name">Group name</label><input id="group-name" class="input" maxlength="60" placeholder="e.g. Boracay Trip" autocomplete="off">
         <label class="group-currency-label" for="group-currency">Default currency</label><select id="group-currency" class="input"><option value="PHP">PHP — Philippine peso</option><option value="USD">USD — US dollar</option><option value="EUR">EUR — Euro</option><option value="GBP">GBP — British pound</option><option value="JPY">JPY — Japanese yen</option><option value="AUD">AUD — Australian dollar</option><option value="CAD">CAD — Canadian dollar</option><option value="SGD">SGD — Singapore dollar</option><option value="HKD">HKD — Hong Kong dollar</option><option value="KRW">KRW — South Korean won</option><option value="THB">THB — Thai baht</option></select>
-        <fieldset class="group-visibility"><legend>Group visibility</legend><label><input type="radio" name="group-visibility" value="private" checked><span><strong>Private</strong><small>Only people with an invite can access it.</small></span></label><label><input type="radio" name="group-visibility" value="public"><span><strong>Public</strong><small>Everyone using the app can view and record changes.</small></span></label></fieldset>
+        <fieldset class="group-visibility"><legend>Group visibility</legend><label><input type="radio" name="group-visibility" value="private" checked><span><strong>Private</strong><small>Only people with an invite link or code can access it.</small></span></label><label><input type="radio" name="group-visibility" value="public"><span><strong>Public</strong><small>Everyone using the app can view and record changes.</small></span></label></fieldset>
         <div class="members-heading"><label>Members</label><small id="completion">0 of 2 named</small></div>
         <div id="people-list" class="people-list"></div><p id="group-error" class="error" role="alert" hidden></p>
         <button class="primary-button" type="submit">Save group <span>→</span></button><button id="cancel-group" class="cancel-link" type="button" hidden>Cancel</button>
@@ -57,6 +57,21 @@
       <div id="expenses-footer" class="trip-footer"><button id="start-trip-button" class="primary-button compact" type="button" hidden>Start trip <span>→</span></button><button id="add-test-day" class="quiet-button" type="button" hidden>Day cards are automatically generated. Click here to manually add a new day..</button></div>
     </section>
   </main>
+
+  <div id="group-entry-modal" class="modal" hidden>
+    <button id="group-entry-backdrop" class="modal-backdrop" type="button" aria-label="Close group options"></button>
+    <section class="group-entry-card modal-card" role="dialog" aria-modal="true" aria-labelledby="group-entry-title">
+      <span class="step">NEW GROUP</span>
+      <h2 id="group-entry-title">Create or join a group</h2>
+      <button id="create-new-group" class="primary-button" type="button">Create a group <span>→</span></button>
+      <div class="group-entry-divider"><span>or join with a code</span></div>
+      <form id="join-code-form" novalidate>
+        <label for="join-code">Invite code</label>
+        <div class="join-code-row"><input id="join-code" class="input" type="text" maxlength="10" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="e.g. K7MT2Q9WXP"><button class="secondary-button" type="submit">Join</button></div>
+        <p id="join-code-error" class="error" role="alert" hidden></p>
+      </form>
+    </section>
+  </div>
 
   <div id="expense-modal" class="modal" hidden>
     <button id="modal-backdrop" class="modal-backdrop" type="button" aria-label="Close transaction form"></button>
@@ -116,7 +131,8 @@
     <section class="invite-card modal-card" role="dialog" aria-modal="true" aria-labelledby="invite-title" aria-describedby="invite-message">
       <span class="step" id="invite-kicker">PRIVATE GROUP</span>
       <h2 id="invite-title">Invite people</h2>
-      <p id="invite-message">Create a private link for this group.</p>
+      <p id="invite-message">Create a private link and code for this group.</p>
+      <div id="invite-code-row" class="invite-code-display" hidden><span><small>INVITE CODE</small><strong id="invite-code"></strong></span><button id="copy-invite-code" class="secondary-button" type="button">Copy code</button></div>
       <div id="invite-link-row" class="invite-link-row" hidden><input id="invite-link" type="text" readonly aria-label="Private invite link"><button id="copy-invite" class="secondary-button" type="button">Copy</button></div>
       <p id="invite-status" class="invite-status" role="status" hidden></p>
       <button id="close-invite" class="primary-button compact" type="button">Done</button>
@@ -151,6 +167,6 @@
       <div class="conversion-actions"><button id="cancel-conversion" class="secondary-button" type="button">Cancel</button><button id="clear-conversion" class="secondary-button" type="button" hidden>Use separate currencies</button><button class="primary-button compact" type="submit">Apply conversion</button></div>
     </form>
   </div>
-  <script src="app.js?v=116"></script>
+  <script src="app.js?v=120"></script>
 </body>
 </html>

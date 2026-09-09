@@ -111,22 +111,33 @@ export async function connectFirebaseStore(onGroupsChanged, onError = console.er
   const inviteToken = new URLSearchParams(window.location.search).get("invite");
   let inviteResult = null;
 
+  async function redeemInvite(token) {
+    const rawToken = String(token || "").trim();
+    if (!rawToken) throw new Error("Enter an invite code.");
+    let redeemedToken = rawToken.toUpperCase();
+    let inviteSnapshot = await getDoc(doc(db, "invites", redeemedToken));
+    if (!inviteSnapshot.exists() && rawToken !== redeemedToken) {
+      redeemedToken = rawToken;
+      inviteSnapshot = await getDoc(doc(db, "invites", redeemedToken));
+    }
+    if (!inviteSnapshot.exists()) throw new Error("This invite code is invalid.");
+    const invite = inviteSnapshot.data();
+    const expiresAt = invite.expiresAt?.toDate?.() || new Date(invite.expiresAt);
+    if (!invite.active || expiresAt < new Date()) throw new Error("This invite code has expired.");
+    const groupReference = doc(db, "groups", invite.groupId);
+    const batch = writeBatch(db);
+    batch.update(groupReference, {
+      accessUids: arrayUnion(uid),
+      lastInviteRedemption: { uid, token: redeemedToken },
+      updatedAt: new Date().toISOString(),
+    });
+    await batch.commit();
+    return { ok: true, groupName: invite.groupName || "Private group" };
+  }
+
   if (inviteToken) {
     try {
-      const inviteSnapshot = await getDoc(doc(db, "invites", inviteToken));
-      if (!inviteSnapshot.exists()) throw new Error("This invite link is invalid.");
-      const invite = inviteSnapshot.data();
-      const expiresAt = invite.expiresAt?.toDate?.() || new Date(invite.expiresAt);
-      if (!invite.active || expiresAt < new Date()) throw new Error("This invite link has expired.");
-      const groupReference = doc(db, "groups", invite.groupId);
-      const batch = writeBatch(db);
-      batch.update(groupReference, {
-        accessUids: arrayUnion(uid),
-        lastInviteRedemption: { uid, token: inviteToken },
-        updatedAt: new Date().toISOString(),
-      });
-      await batch.commit();
-      inviteResult = { ok: true, groupName: invite.groupName || "Private group" };
+      inviteResult = await redeemInvite(inviteToken);
     } catch (error) {
       inviteResult = { ok: false, message: error.message || "This invite could not be accepted." };
     }
@@ -269,8 +280,15 @@ export async function connectFirebaseStore(onGroupsChanged, onError = console.er
   }, onError);
 
   async function createInvite(groupId, groupName) {
-    const bytes = crypto.getRandomValues(new Uint8Array(24));
-    const token = [...bytes].map(byte => byte.toString(16).padStart(2, "0")).join("");
+    const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    let token = "";
+    for (let attempt = 0; attempt < 5; attempt += 1) {
+      const bytes = crypto.getRandomValues(new Uint8Array(10));
+      token = [...bytes].map(byte => alphabet[byte % alphabet.length]).join("");
+      if (!(await getDoc(doc(db, "invites", token))).exists()) break;
+      token = "";
+    }
+    if (!token) throw new Error("A unique invite code could not be generated. Try again.");
     await setDoc(doc(db, "invites", token), {
       groupId,
       groupName,
@@ -317,6 +335,7 @@ export async function connectFirebaseStore(onGroupsChanged, onError = console.er
     inviteResult,
     sync,
     createInvite,
+    joinWithCode: redeemInvite,
     saveReceiptText,
     getReceiptData,
     deleteReceipt,
