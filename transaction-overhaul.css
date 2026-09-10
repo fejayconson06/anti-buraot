@@ -182,13 +182,14 @@
 }
 
 #expense-modal .payer-person-toggle {
-  width: 40px;
-  height: 40px;
+  width: 24px;
+  height: 24px;
+  justify-self: center;
   padding: 0;
   display: grid;
   place-items: center;
   border: 1px solid var(--line);
-  border-radius: 50%;
+  border-radius: 6px;
   background: var(--white);
   color: var(--muted);
 }
@@ -206,9 +207,15 @@
   border-radius: 0;
   background: transparent;
   color: inherit;
-  font-size: 9px;
+  font-size: 0;
   font-weight: 800;
   line-height: 1;
+}
+
+#expense-modal .payer-allocation-row.active .mini-avatar::after {
+  content: "✓";
+  font-size: 13px;
+  font-weight: 900;
 }
 
 #expense-modal .payer-allocation-row.active .payer-person-toggle {
@@ -295,13 +302,14 @@
 }
 
 #expense-modal .split-person-toggle {
-  width: 40px;
-  height: 40px;
+  width: 24px;
+  height: 24px;
+  justify-self: center;
   padding: 0;
   display: grid;
   place-items: center;
   border: 1px solid var(--line);
-  border-radius: 50%;
+  border-radius: 6px;
   background: var(--white);
   color: var(--muted);
 }
@@ -320,9 +328,15 @@
   border-radius: 0;
   background: transparent;
   color: inherit;
-  font-size: 9px;
+  font-size: 0;
   font-weight: 800;
   line-height: 1;
+}
+
+#expense-modal .split-person.active .mini-avatar::after {
+  content: "✓";
+  font-size: 13px;
+  font-weight: 900;
 }
 
 #expense-modal .split-person.active .split-person-toggle {
@@ -506,8 +520,8 @@
   }
 
   #expense-modal .payer-person-toggle {
-    width: 38px;
-    height: 38px;
+    width: 24px;
+    height: 24px;
   }
 
   #expense-modal .unified-split-list {
@@ -521,8 +535,8 @@
   }
 
   #expense-modal .split-person-toggle {
-    width: 38px;
-    height: 38px;
+    width: 24px;
+    height: 24px;
   }
 
   #expense-modal .transaction-history {
