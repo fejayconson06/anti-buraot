@@ -68,6 +68,7 @@
   .group-card > .group-card-icon { font-size: 16px; }
   .group-status-badges span,
   .draft-label,
+  .discount-label,
   .audit-label,
   .expense-viewer-meta,
   .transaction-history-event time { font-size: 8px; }

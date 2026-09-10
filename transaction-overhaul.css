@@ -52,6 +52,8 @@
 
 #expense-modal .discount-toggle-button {
   min-height: 40px;
+  display: inline-flex;
+  align-items: center;
   padding: 0 11px;
   border: 1px solid var(--line);
   border-radius: 9px;
@@ -59,7 +61,7 @@
   color: var(--green);
   font-size: 10px;
   font-weight: 800;
-  cursor: pointer;
+  cursor: default;
 }
 
 #expense-modal .discount-toggle-button.active {
@@ -67,24 +69,18 @@
   background: var(--green-soft);
 }
 
-#expense-modal .discount-editor {
+#expense-modal .discount-save-note {
   margin-top: 12px;
-  padding: 10px;
-  display: grid;
-  grid-template-columns: auto 92px minmax(0, 1fr) auto auto;
-  align-items: center;
-  gap: 9px;
-  border: 1px solid #cfe0d5;
+  padding: 12px 13px;
+  border: 1px solid #d8bd68;
   border-radius: 10px;
-  background: var(--green-soft);
+  background: #fff9e8;
+  color: var(--ink);
 }
 
-#expense-modal .discount-editor label { margin: 0; font-size: 10px; }
-#expense-modal .discount-editor > small { color: var(--muted); font-size: 10px; }
-#expense-modal .discount-input { height: 38px; display:flex; align-items:center; border:1px solid #b7cbbd; border-radius:8px; background:var(--white); }
-#expense-modal .discount-input input { width:100%; min-width:0; height:36px; padding:0 10px 0 4px; border:0; outline:0; background:transparent; text-align:right; }
-#expense-modal .discount-input span { min-width:30px; padding-left:10px; color:var(--muted); font-size:11px; font-weight:800; }
-#expense-modal .discount-editor button { height:38px; min-height:38px; margin:0; }
+#expense-modal .discount-save-note strong { display: block; color: #785d0b; font-size: 12px; }
+#expense-modal .discount-save-note p { margin: 4px 0; font-size: 11px; line-height: 1.45; }
+#expense-modal .discount-save-note small { color: #806e37; font-size: 10px; line-height: 1.4; }
 
 #expense-modal .modal-card .receipt-capture-button {
   min-height: 40px;
@@ -408,6 +404,21 @@
   opacity: .65;
 }
 
+#expense-modal .split-value-column {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+#expense-modal .split-discount-price {
+  padding-right: 2px;
+  color: var(--green);
+  font-size: 9px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: right;
+}
+
 #expense-modal .split-person .allocation-input {
   width: 100%;
   height: 40px;
@@ -520,16 +531,7 @@
     font-size: 9px;
   }
 
-  #expense-modal .discount-editor {
-    grid-template-columns: 76px minmax(0, 1fr) auto;
-    gap: 7px;
-  }
-
-  #expense-modal .discount-editor label { grid-column: 1; }
-  #expense-modal .discount-input { grid-column: 2; }
-  #expense-modal .discount-editor > small { grid-column: 1 / -1; grid-row: 2; }
-  #expense-modal #remove-discount { grid-column: 2; grid-row: 3; }
-  #expense-modal #apply-discount { grid-column: 3; grid-row: 1; min-width: 70px; }
+  #expense-modal .discount-save-note { padding: 11px 12px; }
 
   #expense-modal .receipt-preview {
     width: 46px;

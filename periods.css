@@ -117,6 +117,19 @@
   vertical-align: 1px;
 }
 
+.discount-label {
+  margin-left: 6px;
+  padding: 2px 5px;
+  border-radius: 4px;
+  background: #fff0b8;
+  color: #765b00;
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: .35px;
+  text-transform: uppercase;
+  vertical-align: 1px;
+}
+
 .receipt-label {
   margin-left: 6px;
   color: var(--green);
