@@ -18,7 +18,7 @@ function parseMoneyToCents(value){const cleaned=String(value??"").replace(/[,₱
 function formatMoneyText(value){const raw=String(value??"").replace(/,/g,"").replace(/[^\d.]/g,"");if(!raw)return"";const hasDecimal=raw.includes("."),parts=raw.split("."),integer=(parts.shift()||"0").replace(/^0+(?=\d)/,"")||"0",decimals=parts.join("").slice(0,2),formatted=integer.replace(/\B(?=(\d{3})+(?!\d))/g,",");return hasDecimal?`${formatted}.${decimals}`:formatted}
 function formatCentsForInput(cents){return (cents/100).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2})}
 function formatOptionalCentsForInput(cents){return cents>0?formatCentsForInput(cents):""}
-function attachMoneyInput(input){input.addEventListener("input",()=>{input.value=formatMoneyText(input.value)});input.addEventListener("blur",()=>{const cents=parseMoneyToCents(input.value);if(Number.isFinite(cents))input.value=formatCentsForInput(cents)})}
+function attachMoneyInput(input){input.addEventListener("input",()=>{input.value=formatMoneyText(input.value)});input.addEventListener("blur",()=>{const cents=parseMoneyToCents(input.value);if(Number.isFinite(cents))input.value=formatCentsForInput(cents);else if(!input.value.trim()&&input.closest("#expense-modal"))input.value=formatCentsForInput(0)})}
 const makeId=()=>`${Date.now()}-${Math.random().toString(16).slice(2)}`;
 const today=()=>toDateKey(new Date());
 function toDateKey(date){return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,"0")}-${String(date.getDate()).padStart(2,"0")}`}

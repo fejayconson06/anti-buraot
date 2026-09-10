@@ -545,8 +545,33 @@
 
   #expense-modal .transaction-actions .primary-button.compact {
     grid-column: 1 / -1;
-    grid-row: 1;
+    grid-row: 2;
     min-width: 0;
     width: 100%;
+    height: 52px;
+    min-height: 52px;
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: 1px solid #0f5235;
+    border-radius: 12px;
+    background: var(--green);
+    color: var(--white);
+    box-shadow: 0 7px 16px rgb(25 107 71 / 24%);
+    font-size: 12px;
+  }
+
+  #expense-modal .transaction-actions .primary-button.compact:hover,
+  #expense-modal .transaction-actions .primary-button.compact:focus-visible {
+    background: #125739;
+    outline: 3px solid rgb(25 107 71 / 16%);
+    outline-offset: 2px;
+  }
+
+  #expense-modal .transaction-actions .primary-button.compact:active {
+    box-shadow: 0 3px 8px rgb(25 107 71 / 22%);
+    transform: translateY(1px);
   }
 }
