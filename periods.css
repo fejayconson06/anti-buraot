@@ -35,6 +35,14 @@
   justify-content: center;
 }
 
+.period-label {
+  display: none;
+}
+
+.period-heading-meta {
+  display: none;
+}
+
 .period-content {
   min-width: 0;
   min-height: 100%;
@@ -372,12 +380,52 @@ button.audit-label:focus-visible {
 @media (max-width: 540px) {
   .timeline-track .day-header { grid-template-columns: 42px 1fr; }
   .timeline-track .day-total { display: none; }
-  .day-period { --period-icon-column: 46px; padding: 7px 9px 9px; }
-  .day-period:has(.period-expenses:empty) { min-height: 104px; padding-top: 11px; padding-bottom: 13px; }
+  .day-period {
+    padding: 8px 9px 10px;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    row-gap: 5px;
+    background: var(--white);
+  }
+  .day-period:has(.period-expenses:empty) { min-height: 104px; padding-top: 8px; padding-bottom: 10px; }
   .day-periods { grid-template-rows: repeat(3, minmax(92px, auto)); }
-  .period-expenses .expense-item { grid-template-columns: 30px minmax(0, 1fr) auto; }
+  .period-marker {
+    min-height: 32px;
+    padding: 4px 8px;
+    justify-content: flex-start;
+    gap: 7px;
+    border-radius: 8px;
+    background: var(--period-icon-background);
+  }
+  .period-label {
+    display: inline;
+    color: var(--ink);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+  }
+  .period-heading-meta {
+    min-width: 0;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 5px;
+    color: var(--muted);
+    font-size: 9px;
+    font-weight: 800;
+    text-align: right;
+  }
+  .period-content > .period-meta { display: none; }
+  .period-content { padding-left: 0; }
+  .period-expenses { padding-left: 0; }
+  .period-expenses .expense-item {
+    width: calc(100% - 12px);
+    margin-left: 12px;
+    grid-template-columns: 30px minmax(0, 1fr) auto;
+  }
   .expense-actions { grid-column: 3; grid-row: 2; justify-content: flex-end; }
-  .period-expenses .expense-item { width: 100%; }
   .desktop-split-details { display: none; }
   .expense-activity-labels { display: none; }
   .mobile-expense-details { display: block; }
