@@ -2,6 +2,24 @@
   grid-template-columns: 46px 1fr auto;
 }
 
+.timeline-track .day-total {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 16px;
+}
+
+.timeline-track .day-total-item {
+  min-width: 78px;
+}
+
+.timeline-track .day-total-item small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
 .day-periods {
   display: grid;
   grid-template-rows: repeat(3, minmax(94px, auto));
@@ -377,9 +395,38 @@ button.audit-label:focus-visible {
   margin-bottom: auto;
 }
 
+@media (max-width: 760px) {
+  .timeline-track .day-header {
+    grid-template-columns: 42px minmax(0, 1fr) auto;
+    column-gap: 10px;
+  }
+  .timeline-track .day-total {
+    grid-column: auto;
+    width: auto;
+    padding-top: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 6px;
+    border-top: 0;
+    text-align: right;
+  }
+  .timeline-track .day-total.has-viewer-total {
+    grid-template-columns: 1fr;
+  }
+  .timeline-track .day-total-item {
+    min-width: 0;
+    max-width: 112px;
+    display: block;
+  }
+  .timeline-track .day-total-item strong {
+    margin-top: 2px;
+    text-align: right;
+  }
+}
+
 @media (max-width: 540px) {
-  .timeline-track .day-header { grid-template-columns: 42px 1fr; }
-  .timeline-track .day-total { display: none; }
+  .timeline-track .day-header { grid-template-columns: 42px minmax(0, 1fr) auto; }
+  .timeline-track .day-total { display: grid; }
   .day-period {
     padding: 8px 9px 10px;
     grid-template-columns: minmax(0, 1fr);

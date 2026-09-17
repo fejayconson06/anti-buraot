@@ -94,6 +94,24 @@
   white-space: nowrap;
 }
 
+#expense-modal .receipt-scan-button {
+  min-height: 40px;
+  padding: 0 13px;
+  border: 1px solid var(--green);
+  border-radius: 9px;
+  background: var(--green);
+  color: var(--white);
+  font-size: 10px;
+  font-weight: 800;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+#expense-modal .receipt-scan-button:hover,
+#expense-modal .receipt-scan-button:focus-visible { background: #125739; }
+#expense-modal .receipt-scan-button:active { transform: translateY(1px); }
+#expense-modal .receipt-scan-button:disabled { opacity: .55; cursor: default; }
+
 #expense-modal .receipt-preview {
   width: 50px;
   height: 50px;
@@ -124,7 +142,19 @@
 #expense-modal .receipt-parser-heading > div { min-width: 0; }
 #expense-modal .receipt-parser-heading strong { display: block; font-size: 12px; }
 #expense-modal .receipt-parser-heading small { display: block; margin-top: 3px; color: var(--muted); font-size: 9px; line-height: 1.35; }
+#expense-modal .receipt-parser-actions { display: flex; align-items: center; gap: 6px; }
 #expense-modal .receipt-parser-heading button { height: 34px; min-height: 34px; padding: 0 10px; font-size: 9px; white-space: nowrap; }
+#expense-modal .receipt-discard-button {
+  border: 1px solid #dfb8b0;
+  border-radius: 9px;
+  background: var(--white);
+  color: var(--danger);
+  font-weight: 800;
+  cursor: pointer;
+}
+#expense-modal .receipt-discard-button:hover,
+#expense-modal .receipt-discard-button:focus-visible { border-color: var(--danger); background: #f9ece9; }
+#expense-modal .receipt-discard-button:active { transform: translateY(1px); }
 
 #expense-modal .receipt-ocr-progress {
   position: relative;
@@ -736,6 +766,12 @@
 
   #expense-modal .modal-card .receipt-capture-button {
     width: auto;
+    min-height: 38px;
+    padding: 0 11px;
+    font-size: 9px;
+  }
+
+  #expense-modal .receipt-scan-button {
     min-height: 38px;
     padding: 0 11px;
     font-size: 9px;
