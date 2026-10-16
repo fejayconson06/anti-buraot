@@ -333,6 +333,24 @@ export async function connectFirebaseStore(onGroupsChanged, onError = console.er
     });
   }
 
+  async function deleteGroups(groupIds) {
+    const operations = [];
+    for (const groupId of groupIds) {
+      const [expenses, payments, receipts, invites] = await Promise.all([
+        getDocs(collection(db, "groups", groupId, "expenses")),
+        getDocs(collection(db, "groups", groupId, "payments")),
+        getDocs(collection(db, "groups", groupId, "receipts")),
+        getDocs(query(collection(db, "invites"), where("groupId", "==", groupId))),
+      ]);
+      expenses.docs.forEach(item => operations.push({ type: "delete", reference: item.ref }));
+      payments.docs.forEach(item => operations.push({ type: "delete", reference: item.ref }));
+      receipts.docs.forEach(item => operations.push({ type: "delete", reference: item.ref }));
+      invites.docs.forEach(item => operations.push({ type: "delete", reference: item.ref }));
+      operations.push({ type: "delete", reference: doc(db, "groups", groupId) });
+    }
+    if (operations.length) await commitOperations(operations);
+  }
+
   function deleteReceipt(groupId, expenseId) {
     const batch = writeBatch(db);
     batch.delete(doc(db, "groups", groupId, "receipts", expenseId));
@@ -347,6 +365,7 @@ export async function connectFirebaseStore(onGroupsChanged, onError = console.er
     createInvite,
     joinWithCode: redeemInvite,
     listAllActiveGroups,
+    deleteGroups,
     saveReceiptText,
     getReceiptData,
     deleteReceipt,

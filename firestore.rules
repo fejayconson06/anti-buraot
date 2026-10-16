@@ -74,20 +74,18 @@ service cloud.firestore {
             .hasOnly(['name', 'members', 'currency', 'settlementConversion', 'settlementAdjustments', 'visibility', 'tripStartDate', 'tripEndDate', 'testOffset', 'updatedAt'])
         );
 
-      allow delete: if signedIn()
-        && (
-          request.auth.uid == resource.data.ownerUid
-          || resource.data.visibility == 'public'
-        );
+      allow delete: if signedIn();
 
       match /expenses/{expenseId} {
         allow read: if signedIn();
-        allow write: if canWrite(groupId) || canAccessAfter(groupId);
+        allow create, update: if canWrite(groupId) || canAccessAfter(groupId);
+        allow delete: if signedIn();
       }
 
       match /payments/{paymentId} {
         allow read: if signedIn();
-        allow write: if canWrite(groupId) || canAccessAfter(groupId);
+        allow create, update: if canWrite(groupId) || canAccessAfter(groupId);
+        allow delete: if signedIn();
       }
 
       match /receipts/{receiptId} {
@@ -105,28 +103,25 @@ service cloud.firestore {
           && request.resource.data.size is int
           && request.resource.data.size <= 563200;
 
-        allow delete: if canWrite(groupId) || canAccessAfter(groupId);
+        allow delete: if signedIn();
       }
     }
 
     match /invites/{token} {
       allow get: if signedIn();
-      allow list: if signedIn()
-        && (
-          resource.data.createdBy == request.auth.uid
-          || get(/databases/$(database)/documents/groups/$(resource.data.groupId)).data.visibility == 'public'
-        );
+      allow list: if signedIn();
 
       allow create: if signedIn()
         && request.resource.data.createdBy == request.auth.uid
         && canAccess(request.resource.data.groupId)
         && get(/databases/$(database)/documents/groups/$(request.resource.data.groupId)).data.visibility == 'private';
 
-      allow update, delete: if signedIn()
+      allow update: if signedIn()
         && (
           resource.data.createdBy == request.auth.uid
           || get(/databases/$(database)/documents/groups/$(resource.data.groupId)).data.visibility == 'public'
         );
+      allow delete: if signedIn();
     }
   }
 }

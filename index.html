@@ -17,7 +17,7 @@
       <div class="page-heading"><span id="groups-heading" class="step">YOUR TRIPS</span></div>
       <button id="new-group-button" class="new-group-plus-button" type="button" aria-label="Create a new group" title="New group" hidden>+</button>
       <div id="groups-list" class="groups-list"><p class="firebase-empty-state">Loading trips from Firebase…</p></div>
-      <div class="groups-directory-footer"><button id="browse-active-groups" type="button">View all active groups</button><button id="leave-active-groups" type="button" hidden>Back to my groups</button></div>
+      <div class="groups-directory-footer"><button id="browse-active-groups" type="button">View all active groups</button><div id="active-groups-actions" hidden><button id="delete-selected-groups" class="delete-selected-groups" type="button" disabled>Delete selected (0)</button><button id="leave-active-groups" type="button">Back to my groups</button></div></div>
     </section>
 
     <section id="setup-screen" class="setup-screen" hidden>
@@ -25,7 +25,7 @@
         <div class="form-intro"><span class="step">NEW GROUP</span><h1 hidden>Edit group</h1><p hidden>Update the group name or its members.</p></div>
         <label for="group-name">Group name</label><input id="group-name" class="input" maxlength="60" placeholder="e.g. Boracay Trip" autocomplete="off">
         <label class="group-currency-label" for="group-currency">Default currency</label><select id="group-currency" class="input"><option value="PHP">PHP - Philippine peso</option><option value="USD">USD - US dollar</option><option value="EUR">EUR - Euro</option><option value="GBP">GBP - British pound</option><option value="JPY">JPY - Japanese yen</option><option value="AUD">AUD - Australian dollar</option><option value="CAD">CAD - Canadian dollar</option><option value="SGD">SGD - Singapore dollar</option><option value="HKD">HKD - Hong Kong dollar</option><option value="KRW">KRW - South Korean won</option><option value="THB">THB - Thai baht</option></select>
-        <fieldset class="group-visibility"><legend>Group visibility</legend><label><input type="radio" name="group-visibility" value="private" checked><span><strong>Private</strong><small>Only invited people can edit it. Active groups can appear in the read-only directory.</small></span></label><label><input type="radio" name="group-visibility" value="public"><span><strong>Public</strong><small>Everyone using the app can view and record changes.</small></span></label></fieldset>
+        <fieldset class="group-visibility"><legend>Group visibility</legend><label><input type="radio" name="group-visibility" value="private" checked><span><strong>Private</strong><small>Only invited people can edit it. Active groups can appear in the protected directory.</small></span></label><label><input type="radio" name="group-visibility" value="public"><span><strong>Public</strong><small>Everyone using the app can view and record changes.</small></span></label></fieldset>
         <div class="members-heading"><label>Members</label><small id="completion">0 of 2 named</small></div>
         <div id="people-list" class="people-list"></div><p id="group-error" class="error" role="alert" hidden></p>
         <button class="primary-button" type="submit">Save group <span>→</span></button><button id="cancel-group" class="cancel-link" type="button" hidden>Cancel</button>
@@ -196,6 +196,6 @@
       <div class="conversion-actions"><button id="cancel-conversion" class="secondary-button" type="button">Cancel</button><button id="clear-conversion" class="secondary-button" type="button" hidden>Use separate currencies</button><button class="primary-button compact" type="submit">Apply conversion</button></div>
     </form>
   </div>
-  <script src="app.js?v=141"></script>
+  <script src="app.js?v=142"></script>
 </body>
 </html>

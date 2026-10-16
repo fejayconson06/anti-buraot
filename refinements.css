@@ -39,9 +39,19 @@ html {
 }
 
 .groups-directory-footer { display: flex; justify-content: center; padding: 18px 0 4px; }
+.groups-directory-footer > div { display: flex; align-items: center; justify-content: center; gap: 14px; }
 .groups-directory-footer button { padding: 4px; border: 0; background: transparent; color: var(--muted); font-size: 10px; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 .groups-directory-footer button:hover,
 .groups-directory-footer button:focus-visible { color: var(--green); outline: none; }
+.groups-directory-footer .delete-selected-groups { color: var(--danger); }
+.groups-directory-footer .delete-selected-groups:disabled { color: #9da39f; cursor: not-allowed; text-decoration: none; }
+.active-group-selector { position: absolute; top: 10px; left: 10px; z-index: 1; margin: 0; cursor: pointer; }
+.active-group-selector input { position: absolute; opacity: 0; pointer-events: none; }
+.active-group-selector span { width: 20px; height: 20px; display: grid; place-items: center; border: 1px solid #aeb7b1; border-radius: 5px; background: var(--white); }
+.active-group-selector input:checked + span { border-color: var(--green); background: var(--green); }
+.active-group-selector input:checked + span::after { content: "✓"; color: var(--white); font-size: 12px; font-weight: 800; }
+.active-group-selector input:focus-visible + span { outline: 3px solid rgba(25,107,71,.16); outline-offset: 2px; }
+.group-card:has(.active-group-selector) { position: relative; padding-left: 42px; }
 .active-groups-password-card { width: min(420px, 100%); padding: 26px; border: 1px solid var(--line); border-radius: 13px; background: var(--white); }
 .active-groups-password-card h2 { margin: 0 0 7px; font-size: 18px; }
 .active-groups-password-card > p:not(.error) { margin: 0 0 20px; color: var(--muted); font-size: 11px; line-height: 1.5; }
