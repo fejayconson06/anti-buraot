@@ -38,5 +38,7 @@ browser's local storage.
 
 Anonymous Firebase Authentication identifies the browser installation for
 group access. Public groups are readable and writable by every authenticated
-app visitor. Private groups can be joined through an invite link or its
-10-character invite code. Both grant the same access and expire after 30 days.
+app visitor. The password-gated active-groups directory provides authenticated
+visitors with a read-only view of ongoing and upcoming groups. Private groups
+can be joined for editing through an invite link or its 10-character invite
+code. Both grant the same access and expire after 30 days.

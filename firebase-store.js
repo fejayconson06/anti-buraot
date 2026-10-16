@@ -323,6 +323,16 @@ export async function connectFirebaseStore(onGroupsChanged, onError = console.er
     return snapshot.data().dataUrl;
   }
 
+  async function listAllActiveGroups() {
+    const snapshot = await getDocs(collection(db, "groups"));
+    const activeDocuments = snapshot.docs.filter(item => !item.data().tripEndDate);
+    const groups = await Promise.all(activeDocuments.map(hydrateGroup));
+    return groups.sort((a, b) => {
+      const updatedDifference = String(b.updatedAt || "").localeCompare(String(a.updatedAt || ""));
+      return updatedDifference || String(a.name || "").localeCompare(String(b.name || ""));
+    });
+  }
+
   function deleteReceipt(groupId, expenseId) {
     const batch = writeBatch(db);
     batch.delete(doc(db, "groups", groupId, "receipts", expenseId));
@@ -336,6 +346,7 @@ export async function connectFirebaseStore(onGroupsChanged, onError = console.er
     sync,
     createInvite,
     joinWithCode: redeemInvite,
+    listAllActiveGroups,
     saveReceiptText,
     getReceiptData,
     deleteReceipt,

@@ -38,6 +38,16 @@ html {
   gap: 8px;
 }
 
+.groups-directory-footer { display: flex; justify-content: center; padding: 18px 0 4px; }
+.groups-directory-footer button { padding: 4px; border: 0; background: transparent; color: var(--muted); font-size: 10px; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.groups-directory-footer button:hover,
+.groups-directory-footer button:focus-visible { color: var(--green); outline: none; }
+.active-groups-password-card { width: min(420px, 100%); padding: 26px; border: 1px solid var(--line); border-radius: 13px; background: var(--white); }
+.active-groups-password-card h2 { margin: 0 0 7px; font-size: 18px; }
+.active-groups-password-card > p:not(.error) { margin: 0 0 20px; color: var(--muted); font-size: 11px; line-height: 1.5; }
+.active-groups-password-card .input { letter-spacing: .28em; }
+.active-groups-password-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px; }
+
 .empty-group-card {
   min-height: 150px;
   padding: 24px;
